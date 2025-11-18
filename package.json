@@ -1,0 +1,35 @@
+{
+  "name": "verifiable-deepfake-notary",
+  "version": "1.0.0",
+  "description": "Decentralized Community Notes for Multimedia Truth - DKGcon 2025 Hackathon",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "common"
+  ],
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "backend:dev": "pnpm --filter backend dev",
+    "frontend:dev": "pnpm --filter frontend dev",
+    "db:push": "pnpm --filter backend db:push",
+    "db:studio": "pnpm --filter backend db:studio"
+  },
+  "keywords": [
+    "deepfake",
+    "dkg",
+    "origintrail",
+    "fact-checking",
+    "decentralized",
+    "community-notes"
+  ],
+  "author": "Your Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}
