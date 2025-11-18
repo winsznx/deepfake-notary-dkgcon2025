@@ -1,0 +1,139 @@
+// Prisma Schema for Verifiable Deepfake Notary
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Guardian Actors
+model Guardian {
+  id                String        @id @default(uuid())
+  guardianId        String        @unique // guardian:actor:12345
+  address           String?
+  username          String?
+  reputationScore   Float         @default(0.5)
+  verificationCount Int           @default(0)
+  accuracyRate      Float         @default(0.5)
+  totalStake        Float         @default(0.0)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  // Relations
+  factChecks        FactCheck[]
+  stakes            Stake[]
+  consensusVotes    ConsensusVote[]
+}
+
+// Media Items
+model Media {
+  id          String      @id @default(uuid())
+  sha256Hash  String      @unique
+  contentUrl  String?
+  ipfsHash    String?
+  mediaType   String      // video, image
+  uploadedAt  DateTime    @default(now())
+
+  // Relations
+  factChecks  FactCheck[]
+}
+
+// Fact-Check Notes
+model FactCheck {
+  id                  String      @id @default(uuid())
+  mediaId             String
+  guardianId          String
+  dkgAssetId          String?     // DKG Knowledge Asset ID
+  claimReviewed       String
+  deepfakeScore       Float       // 0.00-1.00 (0 = real, 1 = deepfake)
+  confidenceScore     Float       // 0.00-1.00
+  consensusWeight     Float       @default(0.0)
+  modelUsed           String      @default("XceptionNet-v2.1")
+  artifactsDetected   String?     // JSON array
+  processingTime      Float?
+  createdAt           DateTime    @default(now())
+  publishedToDkg      Boolean     @default(false)
+
+  // Relations
+  media               Media       @relation(fields: [mediaId], references: [id])
+  guardian            Guardian    @relation(fields: [guardianId], references: [id])
+  stakes              Stake[]
+  consensus           Consensus?
+
+  @@index([mediaId])
+  @@index([guardianId])
+}
+
+// Staking Records
+model Stake {
+  id              String      @id @default(uuid())
+  factCheckId     String
+  guardianId      String
+  amount          Float
+  locked          Boolean     @default(true)
+  rewarded        Boolean     @default(false)
+  slashed         Boolean     @default(false)
+  rewardAmount    Float       @default(0.0)
+  slashAmount     Float       @default(0.0)
+  createdAt       DateTime    @default(now())
+  unlockCondition String      @default("consensus_resolution")
+
+  // Relations
+  factCheck       FactCheck   @relation(fields: [factCheckId], references: [id])
+  guardian        Guardian    @relation(fields: [guardianId], references: [id])
+
+  @@index([factCheckId])
+  @@index([guardianId])
+}
+
+// Consensus Results
+model Consensus {
+  id              String          @id @default(uuid())
+  factCheckId     String          @unique
+  totalStake      Float
+  participantCount Int
+  agreementRate   Float
+  resolved        Boolean         @default(false)
+  majorityVerdict String?         // "deepfake" or "real"
+  createdAt       DateTime        @default(now())
+  lastUpdated     DateTime        @updatedAt
+
+  // Relations
+  factCheck       FactCheck       @relation(fields: [factCheckId], references: [id])
+  votes           ConsensusVote[]
+}
+
+// Individual Consensus Votes
+model ConsensusVote {
+  id              String      @id @default(uuid())
+  consensusId     String
+  guardianId      String
+  vote            String      // "deepfake" or "real"
+  confidence      Float
+  weight          Float       // effective stake weight
+  createdAt       DateTime    @default(now())
+
+  // Relations
+  consensus       Consensus   @relation(fields: [consensusId], references: [id])
+  guardian        Guardian    @relation(fields: [guardianId], references: [id])
+
+  @@index([consensusId])
+  @@index([guardianId])
+}
+
+// x402 Payment Records (Mocked)
+model X402Payment {
+  id              String      @id @default(uuid())
+  factCheckId     String
+  amount          Float
+  currency        String      @default("USDC")
+  payerAddress    String
+  paid            Boolean     @default(false)
+  invoiceId       String      @unique
+  createdAt       DateTime    @default(now())
+  paidAt          DateTime?
+
+  @@index([factCheckId])
+}
