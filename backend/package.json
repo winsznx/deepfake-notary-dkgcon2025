@@ -19,18 +19,19 @@
   },
   "dependencies": {
     "@prisma/client": "^5.7.0",
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "multer": "^1.4.5-lts.1",
-    "crypto": "^1.0.1",
     "axios": "^1.6.2",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dkg.js": "^8.2.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "express-rate-limit": "^7.1.5",
-    "helmet": "^7.1.0"
+    "helmet": "^7.1.0",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
     "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.10.5",
     "@typescript-eslint/eslint-plugin": "^6.15.0",

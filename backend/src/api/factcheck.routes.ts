@@ -110,7 +110,7 @@ router.post('/create', async (req, res) => {
  * Get all fact-checks (for dashboard)
  * NOTE: This must come BEFORE /:id route to avoid "all" being treated as an ID
  */
-router.get('/all', async (req, res) => {
+router.get('/all', async (_req, res) => {
   try {
     const factChecks = await prisma.factCheck.findMany({
       include: {

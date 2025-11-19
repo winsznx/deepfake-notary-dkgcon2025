@@ -119,8 +119,8 @@ const Upload = () => {
                 border-2 border-dashed rounded-lg p-8 text-center
                 transition-colors cursor-pointer
                 ${file
-                  ? 'border-royal-blue bg-pale-blue dark:bg-gray-700'
-                  : 'border-gray-300 dark:border-gray-600 hover:border-royal-blue'
+                  ? 'border-primary bg-background dark:bg-gray-700'
+                  : 'border-gray-300 dark:border-gray-600 hover:border-primary'
                 }
               `}
               onClick={() => document.getElementById('file-input').click()}
@@ -128,9 +128,9 @@ const Upload = () => {
               {file ? (
                 <div className="space-y-3">
                   {file.type.startsWith('video') ? (
-                    <FileVideo className="w-16 h-16 mx-auto text-royal-blue" />
+                    <FileVideo className="w-16 h-16 mx-auto text-primary" />
                   ) : (
-                    <Image className="w-16 h-16 mx-auto text-royal-blue" />
+                    <Image className="w-16 h-16 mx-auto text-primary" />
                   )}
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white">{file.name}</p>
@@ -143,7 +143,7 @@ const Upload = () => {
                       e.stopPropagation();
                       setFile(null);
                     }}
-                    className="text-sm text-eggplant hover:underline"
+                    className="text-sm text-accent hover:underline"
                   >
                     Remove
                   </button>
@@ -194,7 +194,7 @@ const Upload = () => {
                 </p>
               </div>
 
-              <div className="bg-pale-blue dark:bg-gray-700 p-4 rounded-lg">
+              <div className="bg-background dark:bg-gray-700 p-4 rounded-lg">
                 <h3 className="font-medium text-sm mb-2">What happens next?</h3>
                 <ol className="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-decimal list-inside">
                   <li>Media will be hashed (SHA-256)</li>
@@ -289,16 +289,43 @@ const Upload = () => {
             </div>
 
             {/* DKG Info */}
-            <div className="mt-6 p-4 bg-royal-blue bg-opacity-10 rounded-lg border border-royal-blue">
-              <h3 className="font-display font-bold mb-2 text-royal-blue dark:text-blue-400">
-                Published to DKG
-              </h3>
+            <div className="mt-6 p-4 bg-primary bg-opacity-10 rounded-lg border border-primary">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-display font-bold text-primary dark:text-blue-400">
+                  Published to DKG
+                </h3>
+                {factCheck.dkgAssetId && factCheck.dkgAssetId.split('/')[1]?.length < 42 && (
+                  <span className="text-xs px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded">
+                    Demo Mode
+                  </span>
+                )}
+              </div>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 Knowledge Asset ID (UAL):
               </p>
-              <code className="text-xs bg-white dark:bg-gray-800 px-2 py-1 rounded block break-all">
+              <code className="text-xs bg-white dark:bg-gray-800 px-2 py-1 rounded block break-all mb-3">
                 {factCheck.dkgAssetId}
               </code>
+              <a
+                href={`https://dkg.origintrail.io/explore?ual=${factCheck.dkgAssetId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-primary hover:text-primary-dark underline flex items-center gap-1"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                Open in DKG Explorer
+              </a>
+              {factCheck.dkgAssetId && factCheck.dkgAssetId.split('/')[1]?.length < 42 && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                  💡 Testnet wallet needs TRAC tokens. Join{' '}
+                  <a href="https://discord.gg/cCRPzzmnNT" target="_blank" rel="noopener noreferrer" className="underline">
+                    Discord
+                  </a>{' '}
+                  for faucet.
+                </p>
+              )}
             </div>
 
             {/* Actions */}
