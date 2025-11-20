@@ -13,13 +13,14 @@ const prisma = new PrismaClient();
 /**
  * POST /api/factcheck/create
  * Create a new fact-check for media
+ * Guardian is auto-assigned if not provided
  */
 router.post('/create', async (req, res) => {
   try {
     const { mediaId, guardianIdentifier } = req.body;
 
-    if (!mediaId || !guardianIdentifier) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    if (!mediaId) {
+      return res.status(400).json({ error: 'Missing mediaId' });
     }
 
     // Get media
@@ -28,8 +29,30 @@ router.post('/create', async (req, res) => {
       return res.status(404).json({ error: 'Media not found' });
     }
 
-    // Get or create guardian
-    const guardian = await guardianService.getOrCreateGuardian(guardianIdentifier);
+    // Auto-assign system Guardian if not provided
+    let guardian;
+    if (guardianIdentifier) {
+      guardian = await guardianService.getOrCreateGuardian(guardianIdentifier);
+    } else {
+      // Get or create auto-verifier Guardian
+      guardian = await prisma.guardian.findUnique({
+        where: { guardianId: 'system:auto-verifier:001' }
+      });
+
+      if (!guardian) {
+        guardian = await prisma.guardian.create({
+          data: {
+            guardianId: 'system:auto-verifier:001',
+            username: 'AutoVerifier',
+            reputationScore: 0.85,
+            verificationCount: 0,
+            accuracyRate: 0.85,
+            totalStake: 0
+          }
+        });
+        console.log('✨ Created auto-verifier Guardian');
+      }
+    }
 
     // Run deepfake analysis
     const analysis = await deepfakeAnalysisService.analyze(media.contentUrl!);

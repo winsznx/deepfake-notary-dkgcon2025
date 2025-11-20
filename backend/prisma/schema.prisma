@@ -57,10 +57,11 @@ model FactCheck {
   publishedToDkg      Boolean     @default(false)
 
   // Relations
-  media               Media       @relation(fields: [mediaId], references: [id])
-  guardian            Guardian    @relation(fields: [guardianId], references: [id])
+  media               Media         @relation(fields: [mediaId], references: [id])
+  guardian            Guardian      @relation(fields: [guardianId], references: [id])
   stakes              Stake[]
   consensus           Consensus?
+  x402Payments        X402Payment[]
 
   @@index([mediaId])
   @@index([guardianId])
@@ -72,6 +73,8 @@ model Stake {
   factCheckId     String
   guardianId      String
   amount          Float
+  tokenType       String      @default("TRAC")  // TRAC, NEURO, DOT
+  effectiveWeight Float?      // amount * token multiplier
   locked          Boolean     @default(true)
   rewarded        Boolean     @default(false)
   slashed         Boolean     @default(false)
@@ -86,6 +89,7 @@ model Stake {
 
   @@index([factCheckId])
   @@index([guardianId])
+  @@index([tokenType])
 }
 
 // Consensus Results
@@ -123,7 +127,7 @@ model ConsensusVote {
   @@index([guardianId])
 }
 
-// x402 Payment Records (Mocked)
+// x402 Payment Records
 model X402Payment {
   id              String      @id @default(uuid())
   factCheckId     String
@@ -132,8 +136,13 @@ model X402Payment {
   payerAddress    String
   paid            Boolean     @default(false)
   invoiceId       String      @unique
+  expiresAt       DateTime?
+  transactionHash String?
   createdAt       DateTime    @default(now())
   paidAt          DateTime?
+
+  // Relations
+  factCheck       FactCheck   @relation(fields: [factCheckId], references: [id])
 
   @@index([factCheckId])
 }

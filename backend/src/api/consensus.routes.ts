@@ -82,4 +82,52 @@ router.get('/:factCheckId', async (req, res) => {
   }
 });
 
+/**
+ * GET /api/consensus/recent
+ * Get recent consensus results
+ */
+router.get('/recent/all', async (req, res) => {
+  try {
+    const consensusResults = await prisma.consensus.findMany({
+      where: { resolved: true },
+      include: {
+        factCheck: {
+          include: {
+            media: true
+          }
+        }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10
+    });
+
+    // Calculate total stake from stakes for each consensus
+    const results = await Promise.all(
+      consensusResults.map(async (consensus) => {
+        const stakes = await prisma.stake.findMany({
+          where: { factCheckId: consensus.factCheckId }
+        });
+        const totalStake = stakes.reduce((sum, s) => sum + s.amount, 0);
+
+        return {
+          id: consensus.id,
+          factCheckId: consensus.factCheckId,
+          mediaHash: consensus.factCheck.media.sha256Hash,
+          totalStake,
+          participantCount: consensus.participantCount,
+          agreementRate: consensus.agreementRate,
+          verdict: consensus.majorityVerdict,
+          confidenceScore: consensus.factCheck.confidenceScore,
+          createdAt: consensus.createdAt
+        };
+      })
+    );
+
+    return res.json(results);
+  } catch (error) {
+    console.error('Get recent consensus error:', error);
+    return res.status(500).json({ error: 'Failed to retrieve consensus results' });
+  }
+});
+
 export default router;
