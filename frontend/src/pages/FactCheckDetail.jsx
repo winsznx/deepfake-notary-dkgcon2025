@@ -1,31 +1,38 @@
 /**
  * Fact-Check Detail Page
  * Shows detailed information about a specific fact-check
+ * Integrates x402 payment gating for high-confidence results
  */
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Shield, Hash, Calendar, User, AlertTriangle,
-  CheckCircle, ExternalLink, Coins, TrendingUp
+  CheckCircle, ExternalLink, Coins, TrendingUp, Lock, Star
 } from 'lucide-react';
 import axios from 'axios';
+import { useWallet } from '../contexts/WalletContext';
 
 const FactCheckDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { account, isConnected } = useWallet();
   const [factCheck, setFactCheck] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stakeAmount, setStakeAmount] = useState(50);
   const [guardianId, setGuardianId] = useState('');
+  const [selectedToken, setSelectedToken] = useState('TRAC');
+  const [supportedTokens, setSupportedTokens] = useState([]);
   const [staking, setStaking] = useState(false);
 
   useEffect(() => {
     fetchFactCheck();
+    fetchSupportedTokens();
   }, [id]);
 
   const fetchFactCheck = async () => {
     try {
-      const response = await axios.get(`/api/factcheck/${id}`);
+      const response = await axios.get(`http://localhost:3001/api/factcheck/${id}`);
       setFactCheck(response.data);
       setLoading(false);
     } catch (err) {
@@ -34,26 +41,43 @@ const FactCheckDetail = () => {
     }
   };
 
+  const fetchSupportedTokens = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/staking/tokens');
+      setSupportedTokens(response.data.tokens || []);
+    } catch (err) {
+      console.error('Failed to fetch supported tokens:', err);
+    }
+  };
+
   const handleStake = async () => {
-    if (!guardianId) {
-      alert('Please enter your Guardian identifier');
+    // Auto-use connected wallet address if available, or require Guardian ID
+    const identifier = guardianId || account;
+
+    if (!identifier) {
+      alert('Please connect wallet or enter your Guardian identifier');
       return;
     }
 
     setStaking(true);
     try {
-      await axios.post('/api/staking/stake', {
+      await axios.post('http://localhost:3001/api/staking/stake', {
         factCheckId: id,
-        guardianIdentifier: guardianId,
-        amount: parseFloat(stakeAmount)
+        guardianIdentifier: identifier,
+        amount: parseFloat(stakeAmount),
+        tokenType: selectedToken
       });
 
-      alert('Stake placed successfully!');
+      alert(`Stake placed successfully with ${selectedToken}!`);
       fetchFactCheck(); // Refresh data
     } catch (err) {
       alert(err.response?.data?.error || 'Staking failed');
     }
     setStaking(false);
+  };
+
+  const handleUnlockPremium = () => {
+    navigate(`/high-confidence?id=${id}`);
   };
 
   if (loading) {
@@ -84,6 +108,7 @@ const FactCheckDetail = () => {
   const deepfakePercentage = (factCheck.deepfakeScore * 100).toFixed(1);
   const confidencePercentage = (factCheck.confidenceScore * 100).toFixed(1);
   const isDeepfake = factCheck.deepfakeScore > 0.5;
+  const requiresPayment = factCheck.confidenceScore >= 0.7;
 
   return (
     <div className="space-y-6">
@@ -93,13 +118,54 @@ const FactCheckDetail = () => {
         Back to Dashboard
       </Link>
 
+      {/* Payment Required Banner */}
+      {requiresPayment && (
+        <div className="card bg-royal-blue bg-opacity-10 border-2 border-royal-blue">
+          <div className="flex items-start gap-3">
+            <Lock className="w-6 h-6 text-royal-blue flex-shrink-0 mt-1" />
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="font-bold text-lg">High-Confidence Result</h3>
+                <Star className="w-5 h-5 text-amber-500" />
+              </div>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+                This fact-check has a confidence score of <span className="font-bold">{confidencePercentage}%</span>.
+                Full details including artifacts, consensus data, and complete analysis require payment via x402 micropayments.
+              </p>
+              <div className="flex items-center gap-4 mb-3">
+                <div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">Price</div>
+                  <div className="font-bold text-lg">
+                    ${factCheck.confidenceScore >= 0.85 ? '0.0003' : '0.0001'} USDC
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">Network</div>
+                  <div className="font-bold">Base Sepolia</div>
+                </div>
+              </div>
+              <button
+                onClick={handleUnlockPremium}
+                className="btn-primary"
+              >
+                <Lock className="w-4 h-4 inline mr-2" />
+                Unlock Premium Details
+              </button>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                Powered by x402 • 60% revenue goes to verifiers
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="card">
         <div className="flex items-start justify-between mb-6">
           <div>
             <h1 className="text-3xl font-display font-bold mb-2">Fact-Check Analysis</h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Detailed verification results and provenance
+              {requiresPayment ? 'Basic verification results' : 'Detailed verification results and provenance'}
             </p>
           </div>
           {isDeepfake ? (
@@ -134,7 +200,7 @@ const FactCheckDetail = () => {
         </div>
       </div>
 
-      {/* Media Information */}
+      {/* Basic Info (Always Visible) */}
       <div className="card">
         <h2 className="text-2xl font-display font-bold mb-4">Media Information</h2>
         <div className="space-y-3">
@@ -148,25 +214,39 @@ const FactCheckDetail = () => {
         </div>
       </div>
 
-      {/* Analysis Details */}
+      {/* Analysis Details (Limited if payment required) */}
       <div className="card">
         <h2 className="text-2xl font-display font-bold mb-4">Analysis Details</h2>
         <div className="space-y-3">
           <InfoRow label="Model Used" value={factCheck.modelUsed} />
-          <InfoRow label="Processing Time" value={`${factCheck.processingTime?.toFixed(2)}s`} />
           <InfoRow label="Analyzed At" value={new Date(factCheck.createdAt).toLocaleString()} />
-          {factCheck.artifactsDetected && (
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Artifacts Detected:</p>
-              <div className="flex flex-wrap gap-2">
-                {JSON.parse(factCheck.artifactsDetected).map((artifact, idx) => (
-                  <span
-                    key={idx}
-                    className="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs rounded-full"
-                  >
-                    {artifact.replace(/_/g, ' ')}
-                  </span>
-                ))}
+
+          {!requiresPayment ? (
+            <>
+              <InfoRow label="Processing Time" value={`${factCheck.processingTime?.toFixed(2)}s`} />
+              {factCheck.artifactsDetected && (
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Artifacts Detected:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {JSON.parse(factCheck.artifactsDetected).map((artifact, idx) => (
+                      <span
+                        key={idx}
+                        className="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs rounded-full"
+                      >
+                        {artifact.replace(/_/g, ' ')}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-dashed border-gray-300 dark:border-gray-600">
+              <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                <Lock className="w-5 h-5" />
+                <p className="text-sm">
+                  Processing time and detailed artifacts are available in premium tier
+                </p>
               </div>
             </div>
           )}
@@ -205,7 +285,9 @@ const FactCheckDetail = () => {
             <code className="text-xs break-all">{factCheck.dkgAssetId}</code>
           </div>
           <a
-            href="#"
+            href={`https://dkg.origintrail.io/explore?ual=${factCheck.dkgAssetId}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-3 inline-flex items-center gap-2 text-royal-blue hover:underline text-sm"
           >
             View on DKG Explorer
@@ -223,35 +305,64 @@ const FactCheckDetail = () => {
         </p>
 
         <div className="space-y-4">
+          {!isConnected && (
+            <div className="p-3 bg-amber-50 dark:bg-amber-900 dark:bg-opacity-20 rounded text-sm">
+              <p className="text-amber-800 dark:text-amber-200">
+                💡 Connect your wallet to stake automatically, or enter your Guardian ID manually
+              </p>
+            </div>
+          )}
+
+          {!isConnected && (
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Guardian Identifier (Optional if wallet connected)
+              </label>
+              <input
+                type="text"
+                value={guardianId}
+                onChange={(e) => setGuardianId(e.target.value)}
+                placeholder="0x... or username"
+                className="input-field"
+              />
+            </div>
+          )}
+
           <div>
             <label className="block text-sm font-medium mb-2">
-              Your Guardian Identifier
+              Select Token
             </label>
-            <input
-              type="text"
-              value={guardianId}
-              onChange={(e) => setGuardianId(e.target.value)}
-              placeholder="0x... or username"
-              className="input-field"
-            />
+            <select
+              value={selectedToken}
+              onChange={(e) => setSelectedToken(e.target.value)}
+              className="input-field mb-4"
+            >
+              {supportedTokens.map((token) => (
+                <option key={token.symbol} value={token.symbol}>
+                  {token.symbol} - {token.name}
+                  {token.multiplier > 1.0 && ` (+${((token.multiplier - 1) * 100).toFixed(0)}% Polkadot Bonus)`}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-2">
-              Stake Amount (TRAC)
+              Stake Amount ({selectedToken})
             </label>
             <div className="flex gap-3">
               <input
                 type="number"
                 value={stakeAmount}
                 onChange={(e) => setStakeAmount(e.target.value)}
-                min="10"
-                max="500"
+                min={supportedTokens.find(t => t.symbol === selectedToken)?.minStake || 10}
+                max={supportedTokens.find(t => t.symbol === selectedToken)?.maxStake || 500}
+                step={selectedToken === 'DOT' ? '0.1' : '1'}
                 className="input-field flex-1"
               />
               <button
                 onClick={handleStake}
-                disabled={staking || !guardianId}
+                disabled={staking || (!guardianId && !isConnected)}
                 className="btn-primary px-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Coins className="w-4 h-4 inline mr-2" />
@@ -259,7 +370,7 @@ const FactCheckDetail = () => {
               </button>
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              Min: 10 TRAC | Max: 500 TRAC
+              Min: {supportedTokens.find(t => t.symbol === selectedToken)?.minStake || 10} {selectedToken} | Max: {supportedTokens.find(t => t.symbol === selectedToken)?.maxStake || 500} {selectedToken}
             </p>
           </div>
 
@@ -274,6 +385,33 @@ const FactCheckDetail = () => {
           )}
         </div>
       </div>
+
+      {/* Consensus Results (Limited if payment required) */}
+      {factCheck.consensus && (
+        <div className="card">
+          <h2 className="text-2xl font-display font-bold mb-4">Consensus Results</h2>
+          {!requiresPayment ? (
+            <div className="space-y-3">
+              <InfoRow label="Total Stake" value={`${factCheck.consensus.totalStake} TRAC`} />
+              <InfoRow label="Participants" value={factCheck.consensus.participantCount} />
+              <InfoRow label="Agreement Rate" value={`${(factCheck.consensus.agreementRate * 100).toFixed(1)}%`} />
+              <InfoRow
+                label="Majority Verdict"
+                value={factCheck.consensus.majorityVerdict || 'Pending'}
+              />
+            </div>
+          ) : (
+            <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-dashed border-gray-300 dark:border-gray-600">
+              <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                <Lock className="w-5 h-5" />
+                <p className="text-sm">
+                  Detailed consensus results are available in premium tier
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

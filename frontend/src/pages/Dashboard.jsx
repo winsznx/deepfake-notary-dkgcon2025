@@ -4,7 +4,7 @@
  */
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FileCheck, AlertTriangle, CheckCircle, Clock, TrendingUp } from 'lucide-react';
+import { FileCheck, AlertTriangle, CheckCircle, Clock, TrendingUp, Lock, Star } from 'lucide-react';
 import axios from 'axios';
 
 const Dashboard = () => {
@@ -24,7 +24,7 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       // Fetch all fact-checks
-      const response = await axios.get('/api/factcheck/all');
+      const response = await axios.get('http://localhost:3001/api/factcheck/all');
       const factChecks = response.data;
 
       // Calculate stats from real data
@@ -94,7 +94,7 @@ const Dashboard = () => {
           icon={FileCheck}
           label="Total Verified"
           value={stats.total}
-          color="royal-blue"
+          color="primary"
         />
         <StatCard
           icon={AlertTriangle}
@@ -127,7 +127,7 @@ const Dashboard = () => {
 
         {loading ? (
           <div className="text-center py-12">
-            <div className="animate-spin w-8 h-8 border-4 border-royal-blue border-t-transparent rounded-full mx-auto"></div>
+            <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
             <p className="text-gray-600 dark:text-gray-400 mt-4">Loading...</p>
           </div>
         ) : recentFactChecks.length === 0 ? (
@@ -152,8 +152,8 @@ const Dashboard = () => {
       {/* Activity Chart Placeholder */}
       <div className="card">
         <h2 className="text-2xl font-display font-bold mb-4">Verification Activity</h2>
-        <div className="bg-pale-blue dark:bg-gray-700 rounded-lg p-8 text-center">
-          <TrendingUp className="w-12 h-12 mx-auto text-royal-blue mb-3" />
+        <div className="bg-background dark:bg-gray-700 rounded-lg p-8 text-center">
+          <TrendingUp className="w-12 h-12 mx-auto text-primary mb-3" />
           <p className="text-gray-600 dark:text-gray-400">
             Activity chart visualization coming soon
           </p>
@@ -177,47 +177,77 @@ const StatCard = ({ icon: Icon, label, value, color }) => (
   </div>
 );
 
-const FactCheckCard = ({ factCheck, getScoreBadge }) => (
-  <Link
-    to={`/factcheck/${factCheck.id}`}
-    className="block p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-royal-blue transition-colors"
-  >
-    <div className="flex items-center justify-between mb-3">
-      <div className="flex items-center gap-3">
-        <div className="font-mono text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
-          {factCheck.media.sha256Hash.substring(0, 12)}...
+const FactCheckCard = ({ factCheck, getScoreBadge }) => {
+  const requiresPayment = factCheck.confidenceScore >= 0.7;
+  const price = factCheck.confidenceScore >= 0.85 ? '0.0003' : '0.0001';
+
+  return (
+    <Link
+      to={`/factcheck/${factCheck.id}`}
+      className={`block p-4 border rounded-lg transition-colors ${
+        requiresPayment
+          ? 'border-royal-blue dark:border-blue-600 bg-royal-blue bg-opacity-5 hover:border-royal-blue hover:bg-opacity-10'
+          : 'border-gray-200 dark:border-gray-700 hover:border-primary'
+      }`}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-3">
+          <div className="font-mono text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+            {factCheck.media.sha256Hash.substring(0, 12)}...
+          </div>
+          <span className="text-xs text-gray-500 capitalize">{factCheck.media.mediaType}</span>
         </div>
-        <span className="text-xs text-gray-500 capitalize">{factCheck.media.mediaType}</span>
+        <div className="flex items-center gap-2">
+          {requiresPayment && (
+            <span className="px-2 py-1 bg-royal-blue text-white text-xs rounded-full flex items-center gap-1">
+              <Lock className="w-3 h-3" />
+              Premium
+            </span>
+          )}
+          {getScoreBadge(factCheck.deepfakeScore)}
+        </div>
       </div>
-      {getScoreBadge(factCheck.deepfakeScore)}
-    </div>
 
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-      <div>
-        <p className="text-gray-600 dark:text-gray-400">Deepfake Score</p>
-        <p className="font-bold">{(factCheck.deepfakeScore * 100).toFixed(1)}%</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+        <div>
+          <p className="text-gray-600 dark:text-gray-400">Deepfake Score</p>
+          <p className="font-bold">{(factCheck.deepfakeScore * 100).toFixed(1)}%</p>
+        </div>
+        <div>
+          <p className="text-gray-600 dark:text-gray-400">Confidence</p>
+          <p className="font-bold flex items-center gap-1">
+            {(factCheck.confidenceScore * 100).toFixed(1)}%
+            {requiresPayment && <Star className="w-3 h-3 text-amber-500" />}
+          </p>
+        </div>
+        <div>
+          <p className="text-gray-600 dark:text-gray-400">Guardian Rep.</p>
+          <p className="font-bold">{(factCheck.guardian.reputationScore * 100).toFixed(0)}%</p>
+        </div>
+        <div>
+          <p className="text-gray-600 dark:text-gray-400">Analyzed</p>
+          <p className="font-bold">{new Date(factCheck.createdAt).toLocaleDateString()}</p>
+        </div>
       </div>
-      <div>
-        <p className="text-gray-600 dark:text-gray-400">Confidence</p>
-        <p className="font-bold">{(factCheck.confidenceScore * 100).toFixed(1)}%</p>
-      </div>
-      <div>
-        <p className="text-gray-600 dark:text-gray-400">Guardian Rep.</p>
-        <p className="font-bold">{(factCheck.guardian.reputationScore * 100).toFixed(0)}%</p>
-      </div>
-      <div>
-        <p className="text-gray-600 dark:text-gray-400">Analyzed</p>
-        <p className="font-bold">{new Date(factCheck.createdAt).toLocaleDateString()}</p>
-      </div>
-    </div>
 
-    {factCheck.publishedToDkg && (
-      <div className="mt-3 flex items-center gap-2 text-xs text-royal-blue dark:text-blue-400">
-        <CheckCircle className="w-3 h-3" />
-        Published to DKG
+      <div className="mt-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          {factCheck.publishedToDkg && (
+            <div className="flex items-center gap-2 text-xs text-primary dark:text-blue-400">
+              <CheckCircle className="w-3 h-3" />
+              Published to DKG
+            </div>
+          )}
+        </div>
+        {requiresPayment && (
+          <div className="text-xs text-royal-blue dark:text-blue-400 font-medium flex items-center gap-1">
+            <Lock className="w-3 h-3" />
+            ${price} USDC to unlock
+          </div>
+        )}
       </div>
-    )}
-  </Link>
-);
+    </Link>
+  );
+};
 
 export default Dashboard;
