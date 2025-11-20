@@ -54,24 +54,26 @@ export class DKGService {
     try {
       const blockchain = process.env.DKG_BLOCKCHAIN || 'hardhat1:31337';
 
-      // Configure blockchain RPC endpoints based on network
+      // Configure blockchain config based on network
+      const privateKey = process.env.DKG_PRIVATE_KEY || '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
+
       const blockchainConfig: any = {
         name: blockchain,
-        privateKey: process.env.DKG_PRIVATE_KEY || '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+        privateKey: privateKey,
       };
 
-      // Add RPC endpoints for testnet/mainnet
+      // Add RPC and hub contract for each network
       if (blockchain === 'otp:20430') {
         // NeuroWeb Testnet
-        blockchainConfig.rpcEndpoints = ['https://lofar-testnet.origin-trail.network'];
+        blockchainConfig.rpc = 'https://lofar-testnet.origin-trail.network';
         blockchainConfig.hubContract = '0xe233b5b78853a62b1e11ebe88bf083e25b0a57a6';
       } else if (blockchain === 'otp:2043') {
         // NeuroWeb Mainnet
-        blockchainConfig.rpcEndpoints = ['https://astrosat-parachain-rpc.origin-trail.network'];
+        blockchainConfig.rpc = 'https://astrosat-parachain-rpc.origin-trail.network';
         blockchainConfig.hubContract = '0x0957e25BD33034948abc28204ddA54b6E1142D6F';
       } else if (blockchain === 'hardhat1:31337') {
         // Local Hardhat
-        blockchainConfig.rpcEndpoints = ['http://127.0.0.1:8545'];
+        blockchainConfig.rpc = 'http://127.0.0.1:8545';
         blockchainConfig.hubContract = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
       }
 
@@ -89,7 +91,7 @@ export class DKGService {
       console.log('✅ DKG Client initialized');
       console.log(`📡 Endpoint: ${process.env.DKG_NODE_ENDPOINT || 'http://localhost'}:${process.env.DKG_NODE_PORT || '8900'}`);
       console.log(`⛓️  Blockchain: ${blockchain}`);
-      console.log(`🔗 RPC: ${blockchainConfig.rpcEndpoints?.[0] || 'local'}`);
+      console.log(`🔗 RPC: ${blockchainConfig.rpc || 'not configured'}`);
     } catch (error) {
       console.error('❌ Failed to initialize DKG client:', error);
       throw error;
@@ -106,8 +108,9 @@ export class DKGService {
       console.log('📝 Publishing Knowledge Asset to DKG...');
       console.log('📋 Asset:', JSON.stringify(asset, null, 2));
 
-      // Create a timeout promise (30 seconds for testnet operations)
-      const publishPromise = this.dkgClient.asset.create(
+      // Publish to DKG (no timeout - let SDK handle retries)
+      console.log('⏳ Waiting for DKG transaction (this may take 1-2 minutes)...');
+      const result = await this.dkgClient.asset.create(
         { public: asset },
         {
           epochsNum: 2,
@@ -115,13 +118,6 @@ export class DKGService {
           minimumNumberOfNodeReplications: 1,
         }
       );
-
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('DKG publish timeout - wallet may need testnet TRAC tokens')), 30000)
-      );
-
-      // Race between publish and timeout
-      const result = await Promise.race([publishPromise, timeoutPromise]);
 
       const ual = (result as any).UAL;
       console.log('✅ Published to DKG successfully');
@@ -140,21 +136,23 @@ export class DKGService {
       return ual;
     } catch (error: any) {
       console.error('❌ DKG publish error:', error);
+      console.error('📋 Error details:', JSON.stringify(error, null, 2));
+      console.error('📋 Error stack:', error.stack);
 
-      // For demo: generate a valid-format UAL if testnet fails
-      if (error.message?.includes('timeout') || error.message?.includes('insufficient funds')) {
-        const mockUAL = `did:dkg:otp:20430/0x${Math.random().toString(16).substring(2, 42)}/${Date.now()}`;
-        console.warn('⚠️  Using demo UAL (testnet wallet needs TRAC tokens)');
-        console.warn('🔗 Demo UAL:', mockUAL);
-        console.warn('💡 To use real testnet: fund wallet at https://neuroweb-testnet.origintrail.io/faucet');
-        return mockUAL;
+      // Provide clear error messages for common issues
+      if (error.message?.includes('insufficient funds') || error.message?.includes('insufficient balance')) {
+        throw new Error(`Insufficient tokens. Check wallet has both NEURO (gas) and TRAC (publishing fee). Request from Discord #faucet-bot: !fundme_neuroweb 0x10Cd8De4017fF6213d93ffF440c8c7e310117D1f`);
       }
 
       if (error.message?.includes('ECONNREFUSED') || error.code === 'ECONNREFUSED') {
-        throw new Error('DKG node is not running. Please start the local DKG node or configure testnet endpoint.');
+        throw new Error(`Cannot connect to DKG node at ${process.env.DKG_NODE_ENDPOINT}:${process.env.DKG_NODE_PORT}`);
       }
 
-      throw new Error(`Failed to publish to DKG: ${error.message}`);
+      if (error.message?.includes('nonce') || error.message?.includes('replacement')) {
+        throw new Error(`Blockchain nonce issue. Wait 1 minute and try again.`);
+      }
+
+      throw new Error(`DKG publishing failed: ${error.message || error}`);
     }
   }
 

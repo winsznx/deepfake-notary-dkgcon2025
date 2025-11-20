@@ -1,6 +1,11 @@
 /**
  * Centralized configuration
  */
+import dotenv from 'dotenv';
+
+// Load environment variables before reading config
+dotenv.config();
+
 export const config = {
   port: parseInt(process.env.PORT || '3001', 10),
   nodeEnv: process.env.NODE_ENV || 'development',
@@ -22,10 +27,22 @@ export const config = {
 
   x402: {
     enabled: process.env.X402_ENABLED === 'true',
+    walletAddress: process.env.X402_WALLET_ADDRESS || '0xYourWalletAddress',
+    network: process.env.X402_NETWORK || 'base-sepolia',
+    facilitatorUrl: process.env.X402_FACILITATOR_URL || 'https://x402.org/facilitator',
     pricing: {
       low: parseFloat(process.env.X402_PRICING_LOW || '0.0000'),
       medium: parseFloat(process.env.X402_PRICING_MEDIUM || '0.0001'),
       high: parseFloat(process.env.X402_PRICING_HIGH || '0.0003')
+    },
+    thresholds: {
+      lowConfidence: parseFloat(process.env.X402_LOW_CONFIDENCE_THRESHOLD || '0.7'),
+      highConfidence: parseFloat(process.env.X402_HIGH_CONFIDENCE_THRESHOLD || '0.85')
+    },
+    // CDP facilitator for mainnet (optional)
+    cdp: {
+      apiKeyId: process.env.CDP_API_KEY_ID || '',
+      apiKeySecret: process.env.CDP_API_KEY_SECRET || ''
     }
   },
 
