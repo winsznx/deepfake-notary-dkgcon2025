@@ -3,7 +3,6 @@
  */
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
-import { config } from '../config';
 import { validateStakeAmount, calculateEffectiveWeight, getSupportedTokens } from '../config/tokens';
 
 const router = express.Router();

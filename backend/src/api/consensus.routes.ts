@@ -86,7 +86,7 @@ router.get('/:factCheckId', async (req, res) => {
  * GET /api/consensus/recent
  * Get recent consensus results
  */
-router.get('/recent/all', async (req, res) => {
+router.get('/recent/all', async (_req, res) => {
   try {
     const consensusResults = await prisma.consensus.findMany({
       where: { resolved: true },

@@ -307,7 +307,7 @@ router.get('/revenue/:invoiceId', async (req, res) => {
  * GET /api/x402/config
  * Get x402 configuration (for frontend)
  */
-router.get('/config', (req, res) => {
+router.get('/config', (_req, res) => {
   return res.json({
     success: true,
     config: {
