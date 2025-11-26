@@ -8,24 +8,40 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Design system from instructions.md
+        // Brand color
+        brand: {
+          DEFAULT: '#A35E47',
+          primary: '#A35E47'
+        },
         primary: {
-          DEFAULT: '#b2ac88',
-          dark: '#4b6e48'
+          DEFAULT: '#A35E47',
+          dark: '#8A4E3A'
         },
         secondary: {
-          DEFAULT: '#898989'
+          DEFAULT: '#898989',
+          light: '#9C9A9A',
+          dark: '#464646'
         },
         background: {
-          DEFAULT: '#f2f0ef',
-          dark: '#1a1a1a'
+          DEFAULT: '#FFFFFF',
+          dark: '#000000'
         },
         surface: {
-          DEFAULT: '#ffffff',
-          dark: '#2d2d2d'
+          DEFAULT: '#F2F2F2',
+          dark: '#1F1F1F'
         },
         accent: {
-          DEFAULT: '#4b6e48'
+          DEFAULT: '#A35E47'
+        },
+        text: {
+          primary: '#000000',
+          secondary: '#464646',
+          'primary-dark': '#EAEAEA',
+          'secondary-dark': '#9C9A9A'
+        },
+        border: {
+          DEFAULT: '#9C9A9A',
+          dark: '#464646'
         }
       },
       fontFamily: {
