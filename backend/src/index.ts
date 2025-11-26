@@ -5,6 +5,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+// @ts-ignore - x402-express types issue
 import { paymentMiddleware } from 'x402-express';
 import { config } from './config';
 import { errorHandler } from './middleware/errorHandler';
