@@ -1,11 +1,12 @@
 /**
  * Dashboard Page
- * Shows all fact-checks and media items
+ * Shows all fact-checks and media items with analytics
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { FileCheck, AlertTriangle, CheckCircle, Clock, TrendingUp, Lock, Star } from 'lucide-react';
 import axios from 'axios';
+import { LineChart, BarChart, DonutChart } from '../components/Charts';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -149,15 +150,25 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* Activity Chart Placeholder */}
-      <div className="card">
-        <h2 className="text-2xl font-display font-bold mb-4">Verification Activity</h2>
-        <div className="bg-background dark:bg-gray-700 rounded-lg p-8 text-center">
-          <TrendingUp className="w-12 h-12 mx-auto text-primary mb-3" />
-          <p className="text-gray-600 dark:text-gray-400">
-            Activity chart visualization coming soon
-          </p>
+      {/* Activity Charts */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Verification Timeline */}
+        <div className="card">
+          <h2 className="text-2xl font-display font-bold mb-4">Verification Timeline</h2>
+          <VerificationTimeline factChecks={recentFactChecks} />
         </div>
+
+        {/* Detection Distribution */}
+        <div className="card">
+          <h2 className="text-2xl font-display font-bold mb-4">Detection Distribution</h2>
+          <DetectionDistribution factChecks={recentFactChecks} />
+        </div>
+      </div>
+
+      {/* Confidence Analysis */}
+      <div className="card">
+        <h2 className="text-2xl font-display font-bold mb-4">Confidence Score Analysis</h2>
+        <ConfidenceAnalysis factChecks={recentFactChecks} />
       </div>
     </div>
   );
@@ -247,6 +258,116 @@ const FactCheckCard = ({ factCheck, getScoreBadge }) => {
         )}
       </div>
     </Link>
+  );
+};
+
+// Chart visualization components
+const VerificationTimeline = ({ factChecks }) => {
+  const timelineData = useMemo(() => {
+    if (!factChecks || factChecks.length === 0) return [];
+
+    // Group by date
+    const grouped = factChecks.reduce((acc, fc) => {
+      const date = new Date(fc.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      acc[date] = (acc[date] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Get last 7 days
+    const dates = [...new Set(factChecks.map(fc =>
+      new Date(fc.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    ))].slice(-7);
+
+    return dates.map(date => ({
+      label: date,
+      value: grouped[date] || 0
+    }));
+  }, [factChecks]);
+
+  return (
+    <div className="flex justify-center">
+      <LineChart
+        data={timelineData}
+        width={500}
+        height={250}
+        color="#A35E47"
+      />
+    </div>
+  );
+};
+
+const DetectionDistribution = ({ factChecks }) => {
+  const distributionData = useMemo(() => {
+    if (!factChecks || factChecks.length === 0) return [];
+
+    const counts = {
+      authentic: 0,
+      suspicious: 0,
+      deepfake: 0
+    };
+
+    factChecks.forEach(fc => {
+      if (fc.deepfakeScore < 0.3) counts.authentic++;
+      else if (fc.deepfakeScore < 0.7) counts.suspicious++;
+      else counts.deepfake++;
+    });
+
+    return [
+      { label: 'Authentic', value: counts.authentic },
+      { label: 'Suspicious', value: counts.suspicious },
+      { label: 'Deepfake', value: counts.deepfake }
+    ];
+  }, [factChecks]);
+
+  return (
+    <div className="flex justify-center">
+      <DonutChart
+        data={distributionData}
+        width={300}
+        height={300}
+        colors={['#4ade80', '#facc15', '#ef4444']}
+      />
+    </div>
+  );
+};
+
+const ConfidenceAnalysis = ({ factChecks }) => {
+  const confidenceData = useMemo(() => {
+    if (!factChecks || factChecks.length === 0) return [];
+
+    // Group by confidence ranges
+    const ranges = {
+      '0-20%': 0,
+      '20-40%': 0,
+      '40-60%': 0,
+      '60-80%': 0,
+      '80-100%': 0
+    };
+
+    factChecks.forEach(fc => {
+      const score = fc.confidenceScore * 100;
+      if (score < 20) ranges['0-20%']++;
+      else if (score < 40) ranges['20-40%']++;
+      else if (score < 60) ranges['40-60%']++;
+      else if (score < 80) ranges['60-80%']++;
+      else ranges['80-100%']++;
+    });
+
+    return Object.entries(ranges).map(([label, value]) => ({
+      label,
+      value
+    }));
+  }, [factChecks]);
+
+  return (
+    <div className="flex justify-center">
+      <BarChart
+        data={confidenceData}
+        width={600}
+        height={300}
+        color="#A35E47"
+      />
+    </div>
   );
 };
 

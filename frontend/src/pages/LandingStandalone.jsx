@@ -2,7 +2,8 @@
  * Standalone Landing Page (Marketing)
  * Full-width landing page before entering the app
  */
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import {
   Shield, Network, Coins, Users, CheckCircle,
   ArrowRight, Github, ExternalLink, Upload,
@@ -10,9 +11,30 @@ import {
   Moon, Sun, X
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useWallet } from '../contexts/WalletContext';
 
 const LandingStandalone = () => {
   const { theme, toggleTheme } = useTheme();
+  const { isConnected, connect } = useWallet();
+  const navigate = useNavigate();
+
+  // Auto-navigate to dashboard if wallet is already connected
+  useEffect(() => {
+    if (isConnected) {
+      navigate('/dashboard');
+    }
+  }, [isConnected, navigate]);
+
+  const handleLaunchApp = async (e) => {
+    e.preventDefault();
+    if (!isConnected) {
+      // Open wallet connection modal
+      await connect();
+      // Navigation will happen automatically via useEffect when wallet connects
+    } else {
+      navigate('/dashboard');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-white dark:from-gray-900 dark:to-gray-800">
@@ -26,6 +48,13 @@ const LandingStandalone = () => {
             </span>
           </div>
           <div className="flex items-center gap-4">
+            <Link
+              to="/docs"
+              className="flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-brand dark:hover:text-brand transition-colors font-medium"
+            >
+              Documentation
+              <ExternalLink className="w-4 h-4" />
+            </Link>
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -33,9 +62,9 @@ const LandingStandalone = () => {
             >
               {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
             </button>
-            <Link to="/dashboard" className="btn-primary">
-              Launch App
-            </Link>
+            <button onClick={handleLaunchApp} className="btn-primary">
+              {isConnected ? 'Launch App' : 'Connect & Launch'}
+            </button>
           </div>
         </div>
       </header>
@@ -56,10 +85,10 @@ const LandingStandalone = () => {
           Powered by AI detection, blockchain immutability, and guardian consensus.
         </p>
         <div className="flex gap-4 justify-center">
-          <Link to="/dashboard" className="btn-primary text-lg px-8 py-4 flex items-center gap-2">
-            Get Started
+          <button onClick={handleLaunchApp} className="btn-primary text-lg px-8 py-4 flex items-center gap-2">
+            {isConnected ? 'Get Started' : 'Connect Wallet to Start'}
             <ArrowRight className="w-5 h-5" />
-          </Link>
+          </button>
           <a
             href="https://github.com/yourusername/deepfake-notary"
             target="_blank"
@@ -306,10 +335,16 @@ const LandingStandalone = () => {
           <p className="text-xl mb-8 opacity-90">
             Join the decentralized network of truth guardians. Start verifying deepfakes today.
           </p>
-          <Link to="/dashboard" className="inline-flex items-center gap-3 bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors">
-            Launch Application
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+          <div className="flex gap-4 justify-center">
+            <button onClick={handleLaunchApp} className="inline-flex items-center gap-3 bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors">
+              {isConnected ? 'Launch Application' : 'Connect Wallet & Launch'}
+              <ArrowRight className="w-5 h-5" />
+            </button>
+            <Link to="/docs" className="inline-flex items-center gap-3 bg-white bg-opacity-20 border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-opacity-30 transition-colors backdrop-blur-sm">
+              Read Documentation
+              <ExternalLink className="w-5 h-5" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -329,9 +364,9 @@ const LandingStandalone = () => {
             <div>
               <h4 className="text-white font-bold mb-4">Resources</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white">Documentation</a></li>
-                <li><a href="#" className="hover:text-white">API Reference</a></li>
-                <li><a href="#" className="hover:text-white">GitHub</a></li>
+                <li><Link to="/docs" className="hover:text-white">Documentation</Link></li>
+                <li><Link to="/docs" className="hover:text-white">API Reference</Link></li>
+                <li><a href="https://github.com/yourusername/deepfake-notary" target="_blank" rel="noopener noreferrer" className="hover:text-white">GitHub</a></li>
               </ul>
             </div>
             <div>
