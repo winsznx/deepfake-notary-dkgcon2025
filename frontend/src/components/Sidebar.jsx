@@ -2,11 +2,10 @@
  * Sidebar Component
  */
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Upload, FileCheck, Coins, Star } from 'lucide-react';
+import { Upload, FileCheck, Coins, Star, LayoutDashboard } from 'lucide-react';
 
 const navItems = [
-  { path: '/', label: 'Home', icon: Home },
-  { path: '/dashboard', label: 'Dashboard', icon: FileCheck },
+  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/upload', label: 'Upload Media', icon: Upload },
   { path: '/staking', label: 'Staking', icon: Coins },
   { path: '/high-confidence', label: 'Premium Notes', icon: Star }

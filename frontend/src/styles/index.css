@@ -2,23 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Common Brand Color */
 :root {
-  /* Light mode colors - from instructions.md */
-  --primary: #b2ac88;
+  --brand-primary: #A35E47;
+}
+
+/* Light Mode Variables */
+:root {
+  --bg-main: #FFFFFF;
+  --bg-surface: #F2F2F2;
+  --text-primary: #000000;
+  --text-secondary: #464646;
+  --border-color: #9C9A9A;
+
+  /* Legacy compatibility */
+  --primary: #A35E47;
   --secondary: #898989;
-  --background: #f2f0ef;
-  --accent: #4b6e48;
-  --color-text: #1a1a1a;
-  --color-surface: #ffffff;
+  --background: #FFFFFF;
+  --accent: #A35E47;
+  --color-text: #000000;
+  --color-surface: #F2F2F2;
+}
+
+/* Dark Mode Variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-main: #000000;
+    --bg-surface: #1F1F1F; /* A mix to soften pure black */
+    --text-primary: #EAEAEA; /* Off-white for readability */
+    --text-secondary: #9C9A9A;
+    --border-color: #464646;
+
+    /* Legacy compatibility */
+    --background: #000000;
+    --color-surface: #1F1F1F;
+    --color-text: #EAEAEA;
+  }
 }
 
 .dark {
-  /* Dark mode colors - from instructions.md */
-  --dark-primary: #4b6e48;
+  /* Dark mode override for Tailwind */
+  --dark-primary: #A35E47;
   --dark-secondary: #898989;
-  --dark-background: #1a1a1a;
-  --dark-surface: #2d2d2d;
-  --color-text: #f2f0ef;
+  --dark-background: #000000;
+  --dark-surface: #1F1F1F;
+  --color-text: #EAEAEA;
 }
 
 @layer base {
