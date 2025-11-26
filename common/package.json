@@ -1,0 +1,10 @@
+{
+  "name": "@deepfake-notary/common",
+  "version": "1.0.0",
+  "description": "Shared types and constants",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"No tests yet\""
+  }
+}
