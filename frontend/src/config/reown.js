@@ -19,8 +19,8 @@ export const networks = [baseSepolia, sepolia, base, mainnet, polygon, arbitrum]
 export const metadata = {
   name: 'Deepfake Notary',
   description: 'Verifiable AI-Generated Content Detection with OriginTrail DKG',
-  url: 'https://deepfake-notary.com',
-  icons: ['https://deepfake-notary.com/icon.png']
+  url: typeof window !== 'undefined' ? window.location.origin : 'https://deepfake-notary.com',
+  icons: [typeof window !== 'undefined' ? `${window.location.origin}/logo.png` : 'https://deepfake-notary.com/logo.png']
 };
 
 // Query client
