@@ -26,8 +26,8 @@ const Sidebar = () => {
               className={`
                 flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
                 ${isActive
-                  ? 'bg-royal-blue text-white'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-pale-blue dark:hover:bg-gray-700'
+                  ? 'bg-primary text-white'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-surface dark:hover:bg-gray-700'
                 }
               `}
             >

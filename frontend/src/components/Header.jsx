@@ -1,7 +1,7 @@
 /**
  * Header Component
  */
-import { Moon, Sun, Shield, Wallet, LogOut } from 'lucide-react';
+import { Moon, Sun, Wallet, LogOut } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useWallet } from '../contexts/WalletContext';
 
@@ -14,7 +14,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Shield className="w-8 h-8 text-accent" />
+            <img src="/logo.png" alt="Deepfake Notary" className="w-8 h-8 object-contain" />
             <div>
               <h1 className="text-xl font-display font-bold text-gray-900 dark:text-white">
                 Verifiable Deepfake Notary
