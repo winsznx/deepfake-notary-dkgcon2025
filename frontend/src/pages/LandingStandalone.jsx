@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useWallet } from '../contexts/WalletContext';
+import TargetCursor from '../components/TargetCursor';
 
 const LandingStandalone = () => {
   const { theme, toggleTheme } = useTheme();
@@ -37,12 +38,14 @@ const LandingStandalone = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-white dark:from-gray-900 dark:to-gray-800">
-      {/* Header */}
-      <header className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+    <>
+      <TargetCursor hideDefaultCursor={false} />
+      <div className="min-h-screen bg-gradient-to-b from-background to-white dark:from-gray-900 dark:to-gray-800">
+        {/* Header */}
+        <header className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Shield className="w-8 h-8 text-accent" />
+            <img src="/logo.png" alt="Deepfake Notary" className="w-8 h-8 object-contain" />
             <span className="text-2xl font-display font-bold text-gray-900 dark:text-white">
               Verifiable Deepfake Notary
             </span>
@@ -354,7 +357,7 @@ const LandingStandalone = () => {
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Shield className="w-6 h-6 text-primary" />
+                <img src="/logo.png" alt="Deepfake Notary" className="w-6 h-6 object-contain" />
                 <span className="text-white font-display font-bold">Deepfake Notary</span>
               </div>
               <p className="text-sm">
@@ -384,6 +387,7 @@ const LandingStandalone = () => {
         </div>
       </footer>
     </div>
+    </>
   );
 };
 

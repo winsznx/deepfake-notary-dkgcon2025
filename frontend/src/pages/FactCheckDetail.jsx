@@ -83,7 +83,7 @@ const FactCheckDetail = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin w-12 h-12 border-4 border-royal-blue border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-12 h-12 border-4 border-primary border-t-transparent rounded-full"></div>
       </div>
     );
   }
@@ -113,16 +113,16 @@ const FactCheckDetail = () => {
   return (
     <div className="space-y-6">
       {/* Back Button */}
-      <Link to="/dashboard" className="flex items-center gap-2 text-royal-blue hover:underline">
+      <Link to="/dashboard" className="flex items-center gap-2 text-primary hover:underline">
         <ArrowLeft className="w-4 h-4" />
         Back to Dashboard
       </Link>
 
       {/* Payment Required Banner */}
       {requiresPayment && (
-        <div className="card bg-royal-blue bg-opacity-10 border-2 border-royal-blue">
+        <div className="card bg-primary bg-opacity-10 border-2 border-primary">
           <div className="flex items-start gap-3">
-            <Lock className="w-6 h-6 text-royal-blue flex-shrink-0 mt-1" />
+            <Lock className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
                 <h3 className="font-bold text-lg">High-Confidence Result</h3>
@@ -194,7 +194,7 @@ const FactCheckDetail = () => {
             label="Confidence Score"
             value={confidencePercentage}
             max={100}
-            color="royal-blue"
+            color="primary"
             description="Model confidence in prediction"
           />
         </div>
@@ -273,8 +273,8 @@ const FactCheckDetail = () => {
 
       {/* DKG Publication */}
       {factCheck.publishedToDkg && factCheck.dkgAssetId && (
-        <div className="card bg-royal-blue bg-opacity-10 border border-royal-blue">
-          <h2 className="text-2xl font-display font-bold mb-4 text-royal-blue dark:text-blue-400">
+        <div className="card bg-primary bg-opacity-10 border border-primary">
+          <h2 className="text-2xl font-display font-bold mb-4 text-primary dark:text-blue-400">
             Published to DKG
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
@@ -288,7 +288,7 @@ const FactCheckDetail = () => {
             href={`https://dkg.origintrail.io/explore?ual=${factCheck.dkgAssetId}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 inline-flex items-center gap-2 text-royal-blue hover:underline text-sm"
+            className="mt-3 inline-flex items-center gap-2 text-primary hover:underline text-sm"
           >
             View on DKG Explorer
             <ExternalLink className="w-4 h-4" />
@@ -297,7 +297,7 @@ const FactCheckDetail = () => {
       )}
 
       {/* Staking Section */}
-      <div className="card bg-pale-blue dark:bg-gray-800">
+      <div className="card bg-surface dark:bg-gray-800">
         <h2 className="text-2xl font-display font-bold mb-4">Stake on This Verification</h2>
         <p className="text-gray-600 dark:text-gray-400 mb-6">
           Stake tokens to support this fact-check. If consensus aligns with this analysis, you'll earn rewards.

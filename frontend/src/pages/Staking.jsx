@@ -123,8 +123,8 @@ const TabButton = ({ active, onClick, label }) => (
     className={`
       px-4 py-2 font-medium transition-colors border-b-2
       ${active
-        ? 'border-royal-blue text-royal-blue'
-        : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-royal-blue'
+        ? 'border-primary text-primary'
+        : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-primary'
       }
     `}
   >
@@ -268,7 +268,7 @@ const OverviewTab = ({ stats, supportedTokens, isConnected, connect, balance, ba
     </div>
 
     {/* Consensus Formula */}
-    <div className="card bg-pale-blue dark:bg-gray-800">
+    <div className="card bg-surface dark:bg-gray-800">
       <h2 className="text-2xl font-display font-bold mb-4">Consensus Formula</h2>
       <div className="bg-white dark:bg-gray-700 p-4 rounded-lg font-mono text-sm overflow-x-auto">
         <div className="mb-3">
@@ -373,8 +373,8 @@ const ConsensusTab = ({ consensusResults }) => (
 const StatCard = ({ icon: Icon, label, value }) => (
   <div className="card">
     <div className="flex items-center gap-3 mb-2">
-      <div className="p-2 bg-royal-blue bg-opacity-10 rounded-lg">
-        <Icon className="w-5 h-5 text-royal-blue" />
+      <div className="p-2 bg-primary bg-opacity-10 rounded-lg">
+        <Icon className="w-5 h-5 text-primary" />
       </div>
       <span className="text-sm text-gray-600 dark:text-gray-400">{label}</span>
     </div>
@@ -383,10 +383,10 @@ const StatCard = ({ icon: Icon, label, value }) => (
 );
 
 const InfoCard = ({ icon: Icon, title, description }) => (
-  <div className="flex gap-4 p-4 bg-pale-blue dark:bg-gray-700 rounded-lg">
+  <div className="flex gap-4 p-4 bg-surface dark:bg-gray-700 rounded-lg">
     <div className="flex-shrink-0">
-      <div className="p-2 bg-royal-blue bg-opacity-10 rounded-lg">
-        <Icon className="w-5 h-5 text-royal-blue" />
+      <div className="p-2 bg-primary bg-opacity-10 rounded-lg">
+        <Icon className="w-5 h-5 text-primary" />
       </div>
     </div>
     <div>

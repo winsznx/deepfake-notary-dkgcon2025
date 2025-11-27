@@ -263,8 +263,8 @@ const HighConfidence = () => {
                   {loading ? 'Checking Access...' : 'Request Access'}
                 </button>
               ) : (
-                <div className="p-4 bg-pale-blue dark:bg-gray-700 rounded-lg space-y-3">
-                  <div className="flex items-center gap-2 text-royal-blue dark:text-blue-400">
+                <div className="p-4 bg-surface dark:bg-gray-700 rounded-lg space-y-3">
+                  <div className="flex items-center gap-2 text-primary dark:text-blue-400">
                     <Lock className="w-5 h-5" />
                     <span className="font-bold">Payment Required</span>
                   </div>
@@ -330,7 +330,7 @@ const HighConfidence = () => {
           </div>
 
           {/* How It Works */}
-          <div className="card bg-pale-blue dark:bg-gray-800">
+          <div className="card bg-surface dark:bg-gray-800">
             <h2 className="text-2xl font-display font-bold mb-4">How x402 Works</h2>
             <div className="space-y-3 text-sm">
               <Step
@@ -437,7 +437,7 @@ const HighConfidence = () => {
               )}
 
               {factCheck.dkgAssetId && (
-                <div className="p-4 bg-royal-blue bg-opacity-10 rounded-lg">
+                <div className="p-4 bg-primary bg-opacity-10 rounded-lg">
                   <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     DKG Knowledge Asset:
                   </div>
@@ -448,7 +448,7 @@ const HighConfidence = () => {
                     href={`https://dkg.origintrail.io/explore?ual=${factCheck.dkgAssetId}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-2 inline-flex items-center gap-1 text-sm text-royal-blue hover:underline"
+                    className="mt-2 inline-flex items-center gap-1 text-sm text-primary hover:underline"
                   >
                     View on DKG Explorer
                     <ExternalLink className="w-3 h-3" />
@@ -502,9 +502,9 @@ const HighConfidence = () => {
 };
 
 const PricingTier = ({ title, price, range, features, highlighted }) => (
-  <div className={`card ${highlighted ? 'border-2 border-royal-blue' : ''}`}>
+  <div className={`card ${highlighted ? 'border-2 border-primary' : ''}`}>
     {highlighted && (
-      <div className="text-xs font-bold text-royal-blue mb-2">MOST POPULAR</div>
+      <div className="text-xs font-bold text-primary mb-2">MOST POPULAR</div>
     )}
     <h3 className="font-display font-bold text-lg mb-1">{title}</h3>
     <div className="text-2xl font-display font-bold mb-1">{price}</div>
@@ -524,7 +524,7 @@ const PricingTier = ({ title, price, range, features, highlighted }) => (
 
 const Step = ({ number, title, description }) => (
   <div className="flex gap-3">
-    <div className="flex-shrink-0 w-6 h-6 bg-royal-blue text-white rounded-full flex items-center justify-center text-sm font-bold">
+    <div className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold">
       {number}
     </div>
     <div>

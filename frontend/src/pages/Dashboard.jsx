@@ -197,7 +197,7 @@ const FactCheckCard = ({ factCheck, getScoreBadge }) => {
       to={`/factcheck/${factCheck.id}`}
       className={`block p-4 border rounded-lg transition-colors ${
         requiresPayment
-          ? 'border-royal-blue dark:border-blue-600 bg-royal-blue bg-opacity-5 hover:border-royal-blue hover:bg-opacity-10'
+          ? 'border-primary dark:border-blue-600 bg-primary bg-opacity-5 hover:border-primary hover:bg-opacity-10'
           : 'border-gray-200 dark:border-gray-700 hover:border-primary'
       }`}
     >
@@ -210,7 +210,7 @@ const FactCheckCard = ({ factCheck, getScoreBadge }) => {
         </div>
         <div className="flex items-center gap-2">
           {requiresPayment && (
-            <span className="px-2 py-1 bg-royal-blue text-white text-xs rounded-full flex items-center gap-1">
+            <span className="px-2 py-1 bg-primary text-white text-xs rounded-full flex items-center gap-1">
               <Lock className="w-3 h-3" />
               Premium
             </span>
@@ -251,7 +251,7 @@ const FactCheckCard = ({ factCheck, getScoreBadge }) => {
           )}
         </div>
         {requiresPayment && (
-          <div className="text-xs text-royal-blue dark:text-blue-400 font-medium flex items-center gap-1">
+          <div className="text-xs text-primary dark:text-blue-400 font-medium flex items-center gap-1">
             <Lock className="w-3 h-3" />
             ${price} USDC to unlock
           </div>

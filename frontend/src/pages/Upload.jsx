@@ -211,7 +211,7 @@ const Upload = () => {
           </div>
 
           {/* Info Card */}
-          <div className="card bg-pale-blue dark:bg-gray-800">
+          <div className="card bg-surface dark:bg-gray-800">
             <h3 className="font-bold mb-3">How Pricing Works</h3>
             <div className="space-y-2 text-sm">
               <div className="flex items-center justify-between">
@@ -296,9 +296,9 @@ const Upload = () => {
 
             {/* Payment Prompt for High Confidence */}
             {requiresPayment && (
-              <div className="mt-6 p-4 bg-royal-blue bg-opacity-10 border-2 border-royal-blue rounded-lg">
+              <div className="mt-6 p-4 bg-primary bg-opacity-10 border-2 border-primary rounded-lg">
                 <div className="flex items-start gap-3 mb-3">
-                  <Lock className="w-6 h-6 text-royal-blue flex-shrink-0 mt-0.5" />
+                  <Lock className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <h3 className="font-bold text-lg mb-1 flex items-center gap-2">
                       High-Confidence Result

@@ -21,6 +21,7 @@ build/
 # Database
 *.db
 *.db-journal
+*.jnl
 prisma/migrations/
 
 # IDE
