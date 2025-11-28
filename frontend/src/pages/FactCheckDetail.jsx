@@ -44,7 +44,7 @@ const FactCheckDetail = () => {
 
   const fetchSupportedTokens = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/staking/tokens');
+      const response = await axios.get(`${API_URL}/api/staking/tokens`);
       setSupportedTokens(response.data.tokens || []);
     } catch (err) {
       console.error('Failed to fetch supported tokens:', err);
@@ -62,7 +62,7 @@ const FactCheckDetail = () => {
 
     setStaking(true);
     try {
-      await axios.post(`${API_URL}/api/staking/stake', {
+      await axios.post(`${API_URL}/api/staking/stake`, {
         factCheckId: id,
         guardianIdentifier: identifier,
         amount: parseFloat(stakeAmount),

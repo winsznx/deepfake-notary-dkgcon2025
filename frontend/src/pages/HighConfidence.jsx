@@ -45,7 +45,7 @@ const HighConfidence = () => {
       // Step 1: Generate invoice
       console.log('📄 Generating invoice for fact-check:', factCheckId);
 
-      const invoiceResponse = await axios.post(`${API_URL}/api/x402/generate-invoice', {
+      const invoiceResponse = await axios.post(`${API_URL}/api/x402/generate-invoice`, {
         factCheckId
       });
 
