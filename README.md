@@ -3,104 +3,188 @@
 > **DKGcon 2025 Hackathon Submission** | Decentralized Community Notes Challenge
 > Scaling Trust in the Age of AI through Agent-Knowledge-Trust Architecture
 
-A complete decentralized fact-checking ecosystem that combines AI deepfake detection, OriginTrail DKG Knowledge Assets, and Polkadot/NeuroWeb blockchain to create verifiable, monetizable community notes for digital media.
+[![Tests](https://img.shields.io/badge/tests-30%2F30%20passing-success)](./backend/src/__tests__)
+[![DKG](https://img.shields.io/badge/DKG-v8.2.0-blue)](https://docs.origintrail.io)
+[![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
+
+A complete decentralized fact-checking ecosystem that combines AI deepfake detection, OriginTrail DKG Knowledge Assets, Polkadot blockchain integration, and economic incentives to create verifiable, monetizable community notes for digital media.
 
 ---
 
 ## 🎯 Problem Statement
 
-In an internet now co-authored by AI, deepfakes and synthetic media threaten the integrity of information. Current fact-checking systems are centralized, opaque, and lack economic incentives for verifiers. We need:
+In an internet now co-authored by AI, deepfakes and synthetic media threaten information integrity. Current fact-checking systems suffer from:
 
-1. **Verifiable AI Analysis** - Transparent, auditable deepfake detection
-2. **Decentralized Consensus** - Community-driven truth validation
-3. **Economic Alignment** - Token incentives for accurate verification
-4. **Knowledge Permanence** - Blockchain-based provenance tracking
+- **Centralization**: Single points of failure and trust
+- **Opacity**: Black-box AI decisions without provenance
+- **No Economic Incentives**: Volunteers burn out, quality suffers
+- **Impermanence**: Fact-checks disappear when platforms shut down
+
+**Our Solution**: A decentralized, transparent, economically sustainable fact-checking system where:
+
+1. ✅ **AI Analysis is Verifiable** - Complete model provenance on-chain
+2. ✅ **Consensus is Decentralized** - Guardian network with stake-weighted voting
+3. ✅ **Economics are Aligned** - Token rewards for accurate verifications
+4. ✅ **Knowledge is Permanent** - Immutable blockchain storage via OriginTrail DKG
 
 ---
 
 ## 🏗️ Architecture: Agent-Knowledge-Trust Layers
 
-This project demonstrates full interoperability across the three foundational layers required by the hackathon:
+This project demonstrates full interoperability across the three foundational layers:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                         AGENT LAYER                                  │
+│                         🤖 AGENT LAYER                               │
 │  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  │
-│  │  Deepfake        │  │  Consensus       │  │  Monetization    │  │
-│  │  Analysis Agent  │→ │  Validation Agent│→ │  Access Agent    │  │
-│  │  (XceptionNet)   │  │  (Guardian-based)│  │  (x402 Protocol) │  │
+│  │  Deepfake        │  │  Consensus       │  │  x402 Payment    │  │
+│  │  Analysis Agent  │→ │  Validation      │→ │  Access Agent    │  │
+│  │  (XceptionNet)   │  │  (Stake-weighted)│  │  (Micropayments) │  │
 │  └──────────────────┘  └──────────────────┘  └──────────────────┘  │
-│   • SHA-256 hashing     • Stake verification  • Invoice generation │
-│   • Confidence scoring  • Consensus algorithm • Payment validation │
-│   • Artifact detection  • Reputation weights  • Content gating     │
+│   • SHA-256 hashing     • Multi-token stake   • Invoice generation │
+│   • Confidence scoring  • Reputation weights  • Payment validation │
+│   • Artifact detection  • Sybil resistance    • Content gating     │
+│                                                                      │
+│  🔧 MCP Server: 8 Tools for AI Agent Integration                    │
+│   └─ Claude Desktop can query DKG, analyze media, stake tokens      │
 └───────────────────┬─────────────────────────────────────────────────┘
                     │
-                    ↓ Publishes Knowledge Assets
+                    ↓ Publishes JSON-LD Knowledge Assets
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      KNOWLEDGE LAYER                                 │
+│                      📚 KNOWLEDGE LAYER                              │
 │              OriginTrail DKG + NeuroWeb Parachain                    │
 │  ┌───────────────────────────────────────────────────────────────┐  │
-│  │  Knowledge Assets (JSON-LD Schema.org MediaReview format)     │  │
+│  │  Knowledge Assets (Schema.org MediaReview + Provenance)       │  │
 │  │  ─────────────────────────────────────────────────────────────│  │
-│  │  Media Hash → Fact-Check → Confidence → Guardian Verifications│  │
-│  │  Provenance → Model Output → Consensus Proof → UAL            │  │
+│  │  Media Hash → Deepfake Score → Confidence → Guardian Votes    │  │
+│  │  AI Model → Version → Artifacts → Consensus Proof → UAL       │  │
 │  └───────────────────────────────────────────────────────────────┘  │
-│  • dkg.js SDK v8.2.0 integration                                     │
-│  • Public testnet node: https://v6-pegasus-node-02.origin-trail.network │
-│  • Real UALs: did:dkg:otp:20430/0x.../...                            │
-│  • Discoverable, linked, queryable via SPARQL                        │
+│  • dkg.js SDK v8.2.0 | Real testnet publishing                      │
+│  • RDF Export: Turtle, N-Triples, N-Quads, JSON-LD                  │
+│  • SPARQL Queries: 12 example queries for semantic web              │
+│  • Discoverable: https://dkg.origintrail.io/explore?ual=...         │
 └───────────────────┬─────────────────────────────────────────────────┘
                     │
-                    ↓ Secured by Polkadot
+                    ↓ Secured by Polkadot Ecosystem
 ┌─────────────────────────────────────────────────────────────────────┐
-│                        TRUST LAYER                                   │
+│                        🔐 TRUST LAYER                                │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────┐ │
-│  │ Token Staking   │  │ Consensus       │  │ Economic Incentives │ │
-│  │ (TRAC on-chain) │  │ Verification    │  │ (x402 Micropayments)│ │
+│  │ Multi-Token     │  │ Weighted        │  │ Economic Incentives │ │
+│  │ Staking         │  │ Consensus       │  │ (Rewards/Slashing)  │ │
 │  └─────────────────┘  └─────────────────┘  └─────────────────────┘ │
-│  • Stake 10-500 TRAC per verification                                │
-│  • Reward +15% for consensus majority                                │
-│  • Slash -10% for consensus minority                                 │
-│  • Polkadot.js wallet integration                                    │
-│  • NeuroWeb testnet (otp:20430) blockchain                           │
-│  • x402 payments on Base Sepolia                                     │
+│  • TRAC (1.0x): 10-500 stake | NeuroWeb native token                │
+│  • NEURO (1.15x): 1-50 stake | +15% Polkadot ecosystem bonus        │
+│  • DOT (1.10x): 0.1-5 stake  | +10% Polkadot native bonus           │
+│  • Polkadot.js wallet | NeuroWeb Testnet (otp:20430)                │
+│  • x402 micropayments | Base Sepolia for high-confidence content    │
 └─────────────────────────────────────────────────────────────────────┘
 ```
+
+**Data Flow**:
+1. User uploads media → SHA-256 hash generated
+2. Deepfake AI analyzes → Confidence score (0-1)
+3. Guardians stake TRAC/NEURO/DOT → Vote real/fake
+4. Consensus algorithm runs → Weighted by stake × reputation
+5. Knowledge Asset created → Published to DKG
+6. UAL generated → Queryable via SPARQL
+7. High-confidence content → Gated by x402 payment
 
 ---
 
 ## ✨ Key Innovations
 
-### 1. **Multi-Chain Architecture**
-- **NeuroWeb (Polkadot parachain)**: On-chain Knowledge Asset storage via OriginTrail DKG
-- **Base Sepolia**: x402 micropayments for premium content access
-- **Cross-chain coordination**: Payment validation triggers DKG access rights
+### 1. **MCP Server for AI Agent Integration**
+First decentralized fact-checking system with Model Context Protocol support:
 
-### 2. **Verifiable AI Provenance**
-Every fact-check includes complete AI model provenance:
+```typescript
+// 8 Tools Available to AI Agents
+- analyze_deepfake      // Run detection on media
+- query_dkg            // Execute SPARQL queries
+- publish_factcheck    // Publish to DKG
+- verify_consensus     // Calculate consensus
+- stake_on_factcheck   // Multi-token staking
+- get_factcheck        // Retrieve details
+- search_guardians     // Find by reputation
+- get_media_hash       // SHA-256 verification
+```
+
+**Usage**: Claude Desktop can automatically fact-check media, query the Knowledge Graph, and stake tokens through natural language commands.
+
+### 2. **Complete AI Provenance Tracking**
+Every fact-check includes verifiable AI model metadata:
+
 ```json
 {
+  "@context": "https://schema.org",
+  "@type": "MediaReview",
   "provenance": {
     "detectionModel": "XceptionNet-v2.1",
     "modelVersion": "2024.11",
-    "analyzedAt": "2025-11-20T14:30:00Z",
-    "processingTime": "2.3s",
-    "artifactsDetected": ["facial_reenactment", "lip_sync_mismatch"]
+    "analyzedAt": "2025-11-28T14:30:00Z",
+    "processingTime": "2.3",
+    "artifactsDetected": [
+      "facial_warping",
+      "lighting_inconsistency",
+      "blending_artifacts"
+    ]
+  },
+  "reviewRating": {
+    "@type": "Rating",
+    "ratingValue": 0.85,
+    "confidenceScore": 0.92
   }
 }
 ```
 
-### 3. **Sybil-Resistant Consensus**
-Guardian reputation and token stake determine consensus weight:
-```
-Effective Weight = Stake × Reputation Score × Accuracy Rate
-Consensus Threshold = 0.70 (configurable)
+**Verification**: All provenance is immutable on DKG, allowing anyone to audit AI decisions.
+
+### 3. **Multi-Token Polkadot Ecosystem Integration**
+Support for TRAC, NEURO, and DOT with ecosystem bonuses:
+
+```typescript
+// Effective Weight Formula
+effectiveWeight = amount × tokenMultiplier × sqrt(reputationScore)
+
+// Token Multipliers
+TRAC:  1.0x  (baseline)
+NEURO: 1.15x (15% bonus for Polkadot parachain token)
+DOT:   1.10x (10% bonus for native Polkadot token)
+
+// Consensus Calculation
+confidence = 0.40 × stakeAgreement +
+             0.30 × guardianReputation +
+             0.20 × modelConfidence +
+             0.10 × verificationCount
 ```
 
-### 4. **Economic Sustainability**
-- **Free tier**: Low-confidence notes (<0.70)
-- **Paid tier**: High-confidence notes (>0.85) via x402
-- **Revenue sharing**: 70% to verifiers, 30% to protocol
+**Why**: Incentivizes use of Polkadot ecosystem tokens while maintaining TRAC as primary staking token.
+
+### 4. **RDF Knowledge Graph Export**
+First fact-checking system with semantic web integration:
+
+```bash
+# Export as RDF Turtle
+GET /api/rdf/factcheck/:id/export?format=turtle
+
+# Get RDF Triples
+GET /api/rdf/factcheck/:id/triples
+
+# Generate Summary
+GET /api/rdf/factcheck/:id/summary
+```
+
+**Formats**: N-Triples, Turtle, N-Quads, JSON-LD
+
+**Use Cases**: Integrate with semantic web tools, link with other knowledge bases, enable AI reasoning over fact-checks.
+
+### 5. **Economic Sustainability via x402**
+Tiered pricing ensures long-term viability:
+
+- **Free Tier** (confidence <0.70): Basic fact-check results
+- **Medium Tier** (0.70-0.85): $0.0001 - Enhanced analysis
+- **Premium Tier** (>0.85): $0.0003 - Full report with UAL
+
+**Revenue Split**: 70% to guardians, 30% to protocol maintenance.
 
 ---
 
@@ -113,51 +197,66 @@ Consensus Threshold = 0.70 (configurable)
 - **Polkadot.js Extension** ([install](https://polkadot.js.org/extension/))
 - **OriginTrail Discord** (for testnet tokens: [join](https://discord.gg/origintrail))
 
-### Installation
+### Installation (5 minutes)
 
 ```bash
-# Clone repository
+# 1. Clone repository
 git clone https://github.com/winsznx/polk.git
 cd polk
 
-# Install dependencies
+# 2. Install all dependencies (frontend + backend)
 pnpm install
 
-# Setup database
+# 3. Setup environment
 cd backend
-pnpm db:push
-cd ..
+cp .env.example .env
+# Edit .env with your wallet private key (see below)
 
-# Start development servers
+# 4. Initialize database
+pnpm db:push
+
+# 5. Verify installation
+pnpm test
+# ✅ Should see: Tests: 30 passed, 30 total
+
+# 6. Start development servers
+cd ..
 pnpm dev
 ```
 
-**Servers:**
-- **Frontend**: http://localhost:5173
-- **Backend**: http://localhost:3001
-- **DKG Node**: https://v6-pegasus-node-02.origin-trail.network:8900
+**Servers will start at**:
+- Frontend: http://localhost:5173
+- Backend: http://localhost:3001
+- DKG Node: https://v6-pegasus-node-02.origin-trail.network:8900
 
 ### Get Testnet Tokens
 
-**NeuroWeb Testnet (required for DKG publishing):**
-1. Create wallet via Polkadot.js extension
-2. Join OriginTrail Discord: https://discord.gg/origintrail
-3. Request tokens in `#faucet-bot` channel:
-   ```
-   !fundme_neuroweb YOUR_WALLET_ADDRESS
-   ```
-4. Wait 1-2 minutes, then check balance: https://neuroweb-testnet.subscan.io
+**NeuroWeb Testnet (Required for DKG)**:
 
-**Base Sepolia (optional for x402 payments):**
+1. Install Polkadot.js extension
+2. Create new account
+3. Join Discord: https://discord.gg/origintrail
+4. Go to `#testnet-faucet` channel
+5. Request tokens:
+   ```
+   !fundme_neuroweb YOUR_POLKADOT_ADDRESS
+   ```
+6. Wait 1-2 minutes
+7. Verify balance: https://neuroweb-testnet.subscan.io
+
+**Expected Balance**:
+- NEURO: ~10 tokens (for gas fees)
+- TRAC: ~100 tokens (for DKG publishing)
+
+**Base Sepolia** (Optional for x402):
 - Faucet: https://www.alchemy.com/faucets/base-sepolia
 
 ---
 
-## 📋 Complete Setup Guide
+## 🔧 Configuration
 
-### 1. Environment Configuration
+### Backend Environment (`backend/.env`)
 
-**Backend** (`backend/.env`):
 ```bash
 # Server
 PORT=3001
@@ -166,13 +265,13 @@ NODE_ENV=development
 # Database
 DATABASE_URL="file:./dev.db"
 
-# OriginTrail DKG v8 Configuration
+# OriginTrail DKG Configuration
 DKG_NODE_ENDPOINT=https://v6-pegasus-node-02.origin-trail.network
 DKG_NODE_PORT=8900
-DKG_BLOCKCHAIN=otp:20430
-DKG_PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE  # Generate from Polkadot.js
+DKG_BLOCKCHAIN=otp:20430  # NeuroWeb Testnet
+DKG_PRIVATE_KEY=0xYOUR_PRIVATE_KEY_FROM_POLKADOT_EXTENSION
 
-# x402 Micropayments
+# x402 Micropayments (Optional)
 X402_ENABLED=true
 X402_WALLET_ADDRESS=0xYOUR_WALLET_ADDRESS
 X402_NETWORK=base-sepolia
@@ -182,6 +281,8 @@ X402_FACILITATOR_URL=https://x402.org/facilitator
 X402_PRICING_LOW=0.0000
 X402_PRICING_MEDIUM=0.0001
 X402_PRICING_HIGH=0.0003
+X402_LOW_CONFIDENCE_THRESHOLD=0.7
+X402_HIGH_CONFIDENCE_THRESHOLD=0.85
 
 # Staking Configuration
 MIN_STAKE_AMOUNT=10
@@ -189,362 +290,520 @@ MAX_STAKE_AMOUNT=500
 REWARD_PERCENTAGE=15
 SLASH_PERCENTAGE=10
 CONSENSUS_THRESHOLD=0.7
+
+# Frontend URL (for CORS)
+FRONTEND_URL=http://localhost:5173
 ```
 
-### 2. Database Setup
+**⚠️ Security Notes**:
+- Never commit `.env` file (already in `.gitignore`)
+- Use separate wallets for testnet and mainnet
+- For production, use secrets manager (AWS Secrets Manager, HashiCorp Vault)
+- See `/backend/.env.example` for template
+
+### Frontend Environment (`frontend/.env`)
 
 ```bash
-cd backend
+# API Configuration
+VITE_API_URL=http://localhost:3001
 
-# Initialize Prisma
-pnpm prisma generate
-
-# Push schema to database
-pnpm db:push
-
-# (Optional) Open Prisma Studio to view data
-pnpm db:studio
+# Network defaults to NeuroWeb Testnet
+# No private keys in frontend!
 ```
-
-### 3. DKG Integration Verification
-
-Test your DKG connection:
-
-```bash
-# Check DKG node status
-curl https://v6-pegasus-node-02.origin-trail.network:8900/info
-
-# Expected response:
-# {"version":"8.2.1"}
-
-# Check wallet balance
-cd ..
-chmod +x check-wallet-balance.sh
-./check-wallet-balance.sh
-```
-
-**Required balances:**
-- **NEURO**: >5 tokens (gas fees)
-- **TRAC**: >100 tokens (DKG publishing fees)
 
 ---
 
-## 🔧 Usage
+## 📖 Usage Guide
 
 ### For Users (Fact-Check Consumers)
 
-1. **Navigate** to http://localhost:5173
-2. **Upload** suspicious image/video
-3. **View** AI analysis results:
-   - Confidence score (0-1)
-   - Detected artifacts
-   - Guardian consensus
-4. **Access** high-confidence reports:
-   - Free if confidence <0.70
-   - Paid via x402 if confidence >0.85
-5. **Verify** on-chain:
-   - Click "View on DKG Explorer"
+1. **Access the App**
+   - Navigate to http://localhost:5173
+   - Click "Launch App"
+
+2. **Upload Media**
+   - Go to `/upload`
+   - Drag & drop image or video
+   - Wait for AI analysis (~5-10 seconds)
+
+3. **View Results**
+   - Deepfake Score (0 = authentic, 1 = fake)
+   - Confidence Level
+   - Detected Artifacts
+   - Guardian Consensus (if available)
+
+4. **Access Premium Content**
+   - If confidence >0.85, pay via x402
+   - Download full report with UAL
+   - Verify on DKG Explorer
+
+5. **Verify on Blockchain**
+   - Click "View on DKG"
    - See immutable Knowledge Asset
+   - Query via SPARQL
 
 ### For Guardians (Verifiers)
 
-1. **Connect** Polkadot.js wallet
-2. **Navigate** to `/staking`
-3. **Stake** TRAC tokens (10-500)
-4. **Review** fact-checks in dashboard
-5. **Vote** on authenticity (real/fake)
-6. **Earn** rewards for consensus:
-   - +15% stake if majority
-   - -10% stake if minority
+1. **Connect Wallet**
+   - Install Polkadot.js extension
+   - Click "Connect Polkadot Wallet"
+   - Select account
+   - Approve connection
+
+2. **Review Fact-Checks**
+   - Go to `/dashboard`
+   - Browse pending fact-checks
+   - Click to view details
+
+3. **Stake Tokens**
+   - Go to `/staking`
+   - Select token (TRAC, NEURO, or DOT)
+   - Enter amount (respect min/max)
+   - Submit stake
+   - Approve transaction in wallet
+
+4. **Vote on Authenticity**
+   - Select fact-check
+   - Review AI analysis
+   - Vote "Real" or "Deepfake"
+   - Include prediction in stake
+
+5. **Earn Rewards**
+   - If majority: +15% of stake
+   - If minority: -10% of stake
+   - Reputation score updated
+   - Unlocked after consensus
 
 ### For Developers
 
 ```bash
 # Run backend only
-pnpm backend:dev
+cd backend
+pnpm dev
 
 # Run frontend only
-pnpm frontend:dev
+cd frontend
+pnpm dev
+
+# Run MCP server (for Claude Desktop)
+cd backend
+pnpm mcp
 
 # Build for production
 pnpm build
 
-# Run tests
+# Run all tests
 pnpm test
 
+# Run specific test suite
+cd backend
+pnpm test dkg.service.test.ts
+
 # Type checking
-cd backend && pnpm type-check
-cd frontend && pnpm type-check
+pnpm build  # TypeScript compilation
+
+# Database management
+pnpm db:push      # Push schema changes
+pnpm db:studio    # Open Prisma Studio
+pnpm db:generate  # Generate Prisma client
+
+# Test DKG publishing
+pnpm dkg:publish-test
 ```
 
 ---
 
-## 📊 Knowledge Asset Schema
+## 🔌 API Reference
 
-All fact-checks are published as structured JSON-LD Knowledge Assets following Schema.org MediaReview vocabulary:
+### Base URL
+```
+Development: http://localhost:3001/api
+Production:  https://your-domain.com/api
+```
+
+### Endpoints
+
+#### Media Upload
+```http
+POST /api/media/upload
+Content-Type: multipart/form-data
+
+Body:
+  - file: <binary>
+
+Response:
+{
+  "id": "abc123",
+  "sha256Hash": "2daeb7d4867f...",
+  "contentUrl": "/uploads/abc123.jpg",
+  "mediaType": "image"
+}
+```
+
+#### Create Fact-Check
+```http
+POST /api/factcheck/create
+Content-Type: application/json
+
+{
+  "mediaId": "abc123",
+  "guardianId": "5GrwvaEF5zX..."
+}
+
+Response:
+{
+  "id": "def456",
+  "deepfakeScore": 0.85,
+  "confidenceScore": 0.92,
+  "artifactsDetected": ["facial_warping"],
+  "processingTime": 2.3,
+  "publishedToDkg": false,
+  "dkgAssetId": null
+}
+```
+
+#### Get Fact-Check Details
+```http
+GET /api/factcheck/:id
+
+Response:
+{
+  "id": "def456",
+  "deepfakeScore": 0.85,
+  "confidenceScore": 0.92,
+  "claimReviewed": "Media exhibits deepfake characteristics",
+  "dkgAssetId": "did:dkg:otp:20430/0x.../123",
+  "media": { "sha256Hash": "...", "mediaType": "image" },
+  "guardian": { "guardianId": "...", "reputationScore": 0.85 },
+  "stakes": [...],
+  "consensus": { "majorityVerdict": "deepfake", "agreementRate": 0.83 }
+}
+```
+
+#### Multi-Token Staking
+```http
+POST /api/staking/stake
+Content-Type: application/json
+
+{
+  "factCheckId": "def456",
+  "guardianIdentifier": "5GrwvaEF5zX...",  // Polkadot address
+  "amount": 100,
+  "tokenType": "TRAC",  // or "NEURO", "DOT"
+  "prediction": "deepfake"  // or "real"
+}
+
+Response:
+{
+  "id": "stake123",
+  "amount": 100,
+  "tokenType": "TRAC",
+  "effectiveWeight": 85.0,  // amount × multiplier × sqrt(reputation)
+  "locked": true,
+  "prediction": "deepfake"
+}
+```
+
+#### Get Wallet Stakes
+```http
+GET /api/staking/wallet/:address
+
+Response:
+{
+  "stakes": [...],
+  "stats": {
+    "totalStaked": 500,
+    "activeStakes": 5,
+    "winRate": 0.83,
+    "totalRewards": 75,
+    "totalSlashed": 10
+  }
+}
+```
+
+#### Get Supported Tokens
+```http
+GET /api/staking/tokens
+
+Response:
+{
+  "tokens": [
+    {
+      "symbol": "TRAC",
+      "name": "OriginTrail",
+      "multiplier": 1.0,
+      "minStake": 10,
+      "maxStake": 500,
+      "network": "NeuroWeb"
+    },
+    {
+      "symbol": "NEURO",
+      "multiplier": 1.15,
+      "minStake": 1,
+      "maxStake": 50,
+      "network": "NeuroWeb Parachain"
+    },
+    {
+      "symbol": "DOT",
+      "multiplier": 1.10,
+      "minStake": 0.1,
+      "maxStake": 5,
+      "network": "Polkadot Relay Chain"
+    }
+  ]
+}
+```
+
+#### Calculate Consensus
+```http
+POST /api/consensus/calculate/:mediaId
+
+Response:
+{
+  "totalStake": 500,
+  "participantCount": 12,
+  "agreementRate": 0.83,
+  "majorityVerdict": "deepfake",
+  "confidenceScore": 0.89
+}
+```
+
+#### x402 Payment Flow
+```http
+# 1. Request Invoice
+GET /api/x402/high-confidence/:factCheckId
+
+Response:
+{
+  "invoiceId": "invoice123",
+  "amount": 0.0003,
+  "currency": "ETH",
+  "paymentAddress": "0x...",
+  "expiresAt": "2025-11-28T15:00:00Z"
+}
+
+# 2. Submit Payment
+POST /api/x402/pay/:invoiceId
+{
+  "txHash": "0x..."
+}
+
+# 3. Access Content
+GET /api/x402/high-confidence/:factCheckId?invoiceId=invoice123
+
+Response:
+{
+  "factCheck": {...},
+  "ual": "did:dkg:otp:20430/0x.../123",
+  "fullReport": {...}
+}
+```
+
+#### RDF Export (NEW)
+```http
+# Export as Turtle
+GET /api/rdf/factcheck/:id/export?format=turtle
+
+Response: (text/turtle)
+@prefix schema: <https://schema.org/> .
+<did:dkg:...> a schema:MediaReview ;
+  schema:reviewRating [...] .
+
+# Get RDF Triples
+GET /api/rdf/factcheck/:id/triples
+
+Response:
+{
+  "factCheckId": "def456",
+  "tripleCount": 47,
+  "triples": [
+    {
+      "subject": "did:dkg:...",
+      "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "object": "https://schema.org/MediaReview"
+    },
+    ...
+  ]
+}
+
+# Get Markdown Summary
+GET /api/rdf/factcheck/:id/summary
+
+Response: (text/markdown)
+# Deepfake Fact-Check Report
+
+## Claim
+Media exhibits deepfake characteristics
+
+## Analysis Result
+- **Deepfake Score**: 0.85 (Likely Deepfake)
+- **Confidence**: 0.92
+...
+```
+
+---
+
+## 🧬 Knowledge Asset Schema
+
+All fact-checks follow Schema.org MediaReview vocabulary:
 
 ```json
 {
   "@context": "https://schema.org",
   "@type": "MediaReview",
-  "identifier": "did:dkg:otp:20430/0x8e7f1b2.../1732116000",
+  "identifier": "did:dkg:otp:20430/0x8e7f1b2c3a4d.../1732116000",
+
   "mediaItem": {
-    "@type": "ImageObject",
+    "@type": "VideoObject",
     "contentUrl": "ipfs://Qm...",
     "sha256": "2daeb7d4867f796c048b4a59675a6d1d5c85f2e2222ee6a4343cbc0bdec2fa3c",
-    "uploadedAt": "2025-11-20T14:30:00Z"
+    "uploadedAt": "2025-11-28T14:30:00Z"
   },
-  "claimReviewed": "Video exhibits authentic characteristics",
+
+  "claimReviewed": "Video exhibits deepfake characteristics",
+
   "reviewRating": {
     "@type": "Rating",
-    "ratingValue": 0.18,
+    "ratingValue": 0.85,
     "bestRating": 1,
     "worstRating": 0,
-    "confidenceScore": 0.826
+    "confidenceScore": 0.92,
+    "consensusWeight": 250
   },
+
   "provenance": {
     "detectionModel": "XceptionNet-v2.1",
     "modelVersion": "2024.11",
-    "analyzedAt": "2025-11-20T14:30:00Z",
-    "processingTime": "2.3s",
-    "artifactsDetected": ["facial_reenactment"]
+    "analyzedAt": "2025-11-28T14:30:00Z",
+    "processingTime": "2.3",
+    "artifactsDetected": [
+      "facial_warping",
+      "lighting_inconsistency",
+      "blending_artifacts"
+    ]
   },
+
   "author": {
     "@type": "Person",
-    "identifier": "system:auto-verifier:001",
+    "identifier": "guardian:polkadot:5GrwvaEF5zX...",
     "reputationScore": 0.85,
     "verificationCount": 142,
     "accuracyRate": 0.89
   },
+
   "stake": {
     "amount": "250",
     "currency": "TRAC",
     "locked": true,
     "unlockCondition": "consensus_resolution"
-  },
-  "consensusProof": {
-    "totalVotes": 12,
-    "agreementRate": 0.83,
-    "guardianSignatures": ["0x...", "0x..."],
-    "resolvedAt": "2025-11-20T15:00:00Z"
   }
 }
 ```
 
-### Querying Knowledge Assets
+### SPARQL Query Examples
 
 ```sparql
+# Find High-Confidence Deepfakes
 PREFIX schema: <https://schema.org/>
 
-SELECT ?asset ?confidence ?consensus
+SELECT ?factCheck ?score ?confidence
 WHERE {
-  ?asset a schema:MediaReview .
-  ?asset schema:reviewRating/schema:confidenceScore ?confidence .
-  ?asset schema:consensusProof/schema:agreementRate ?consensus .
-  FILTER (?confidence > 0.85)
+  ?factCheck a schema:MediaReview ;
+             schema:reviewRating ?rating .
+  ?rating schema:ratingValue ?score ;
+          schema:confidenceScore ?confidence .
+  FILTER(?score > 0.8 && ?confidence > 0.85)
 }
-ORDER BY DESC(?confidence)
+ORDER BY DESC(?score)
 LIMIT 10
-```
 
----
+# Find Fact-Checks by Guardian
+PREFIX schema: <https://schema.org/>
 
-## 🔗 DKG Edge Node Integration
+SELECT ?factCheck ?score ?analyzedAt
+WHERE {
+  ?factCheck a schema:MediaReview ;
+             schema:reviewRating/schema:ratingValue ?score ;
+             schema:author ?author ;
+             schema:datePublished ?analyzedAt .
+  ?author schema:identifier "guardian:polkadot:5GrwvaEF..." .
+}
+ORDER BY DESC(?analyzedAt)
 
-### Configuration
+# Calculate Average Deepfake Score
+PREFIX schema: <https://schema.org/>
 
-**Backend** (`backend/src/services/dkg.service.ts`):
-
-```typescript
-import DKG from 'dkg.js';
-
-const dkgClient = new DKG({
-  endpoint: 'https://v6-pegasus-node-02.origin-trail.network',
-  port: '8900',
-  blockchain: {
-    name: 'otp:20430',  // NeuroWeb Testnet
-    privateKey: process.env.DKG_PRIVATE_KEY,
-    rpc: 'https://lofar-testnet.origin-trail.network',
-    hubContract: '0xe233b5b78853a62b1e11ebe88bf083e25b0a57a6'
-  },
-  environment: 'testnet',
-  maxNumberOfRetries: 300,
-  frequency: 2
-});
-```
-
-### Publishing Flow
-
-1. **User uploads** media → Backend hashes with SHA-256
-2. **AI agent analyzes** → Generates confidence score
-3. **Guardians verify** → Stake tokens and vote
-4. **Consensus reached** → Calculate agreement rate
-5. **DKG publishing**:
-   ```typescript
-   const result = await dkgClient.asset.create(
-     { public: knowledgeAsset },
-     {
-       epochsNum: 2,
-       minimumNumberOfFinalizationConfirmations: 3,
-       minimumNumberOfNodeReplications: 1
-     }
-   );
-   const ual = result.UAL;
-   // Returns: did:dkg:otp:20430/0x8e7f1b2.../1732116000
-   ```
-6. **Explorer link** generated: https://dkg.origintrail.io/explore?ual={UAL}
-
-### Real Examples
-
-**Live Knowledge Assets published during development:**
-
-- Authentic Image: `did:dkg:otp:20430/0x8e7f1b2c3a4d/1732115280`
-- Deepfake Video: `did:dkg:otp:20430/0x9a3c5e7f8b1d/1732115340`
-- High-Consensus: `did:dkg:otp:20430/0xa5b7c9d1e3f/1732115400`
-
-(View on explorer to see complete JSON-LD structure)
-
----
-
-## 💰 x402 Micropayments Integration
-
-### Payment Flow
-
-```
-1. User requests high-confidence fact-check
-   ↓
-2. Backend generates x402 invoice
-   - Amount: $0.0003 (for >0.85 confidence)
-   - Network: Base Sepolia
-   - Expires: 15 minutes
-   ↓
-3. User pays via MetaMask
-   ↓
-4. x402 Facilitator validates payment
-   ↓
-5. Backend grants access to Knowledge Asset
-   ↓
-6. User downloads full report with UAL
-```
-
-### Implementation
-
-**Backend** (`backend/src/services/x402.service.ts`):
-
-```typescript
-export async function createInvoice(factCheckId: string) {
-  const factCheck = await prisma.factCheck.findUnique({
-    where: { id: factCheckId }
-  });
-
-  const pricing =
-    factCheck.confidence > 0.85 ? 0.0003 :
-    factCheck.confidence > 0.70 ? 0.0001 : 0;
-
-  const invoice = await prisma.x402Invoice.create({
-    data: {
-      factCheckId,
-      amount: pricing,
-      currency: 'ETH',
-      network: 'base-sepolia',
-      expiresAt: new Date(Date.now() + 15 * 60 * 1000)
-    }
-  });
-
-  return {
-    invoiceId: invoice.id,
-    paymentAddress: config.x402.walletAddress,
-    amount: pricing,
-    network: 'base-sepolia'
-  };
+SELECT (AVG(?score) AS ?avgScore) (COUNT(?factCheck) AS ?total)
+WHERE {
+  ?factCheck a schema:MediaReview ;
+             schema:reviewRating/schema:ratingValue ?score .
 }
 ```
 
-**Frontend** (`frontend/src/pages/HighConfidence.jsx`):
-
-```javascript
-const payForFactCheck = async (factCheckId) => {
-  // Request invoice
-  const { invoiceId, amount, paymentAddress } =
-    await fetch(`/api/x402/invoices/${factCheckId}`).then(r => r.json());
-
-  // Send payment via MetaMask
-  const txHash = await window.ethereum.request({
-    method: 'eth_sendTransaction',
-    params: [{
-      to: paymentAddress,
-      value: ethers.utils.parseEther(amount).toHexString()
-    }]
-  });
-
-  // Verify payment
-  await fetch(`/api/x402/verify/${invoiceId}`, {
-    method: 'POST',
-    body: JSON.stringify({ txHash })
-  });
-
-  // Access granted - download report
-  const report = await fetch(`/api/fact-checks/${factCheckId}/full`)
-    .then(r => r.json());
-};
-```
+**Full documentation**: `/backend/docs/SPARQL_QUERIES.md` (12 example queries)
 
 ---
 
-## 🏛️ Polkadot/NeuroWeb Integration
+## 🔬 Testing
 
-### Wallet Connection
+### Test Coverage: 30/30 Passing ✅
 
-**Frontend** (`frontend/src/contexts/WalletContext.jsx`):
+```bash
+# Run all tests
+cd backend
+pnpm test
 
-```javascript
-import { web3Enable, web3Accounts } from '@polkadot/extension-dapp';
+# Output:
+PASS  src/__tests__/dkg.service.test.ts (7 tests)
+PASS  src/__tests__/deepfake-analysis.service.test.ts (10 tests)
+PASS  src/__tests__/consensus.service.test.ts (13 tests)
 
-export const WalletProvider = ({ children }) => {
-  const connectWallet = async () => {
-    // Enable Polkadot.js extension
-    const extensions = await web3Enable('Deepfake Notary');
-
-    if (!extensions.length) {
-      throw new Error('Polkadot.js extension not installed');
-    }
-
-    // Get all accounts
-    const accounts = await web3Accounts();
-
-    // Connect to NeuroWeb testnet
-    const { ApiPromise, WsProvider } = await import('@polkadot/api');
-    const provider = new WsProvider('wss://lofar-testnet.origin-trail.network');
-    const api = await ApiPromise.create({ provider });
-
-    return { accounts, api };
-  };
-
-  // ... context implementation
-};
+Test Suites: 3 passed, 3 total
+Tests:       30 passed, 30 total
+Snapshots:   0 total
+Time:        29.122s
 ```
 
-### On-Chain Staking
+### Test Categories
 
-```javascript
-const stakeTokens = async (amount) => {
-  const injector = await web3FromAddress(walletAddress);
+**DKG Service Tests** (7 tests):
+- ✅ Client initialization
+- ✅ JSON-LD structure validation
+- ✅ Deepfake score range (0-1)
+- ✅ Knowledge Asset required fields
+- ✅ SPARQL query syntax
 
-  const tx = api.tx.balances.transfer(
-    stakingContractAddress,
-    amount
-  );
+**Deepfake Analysis Tests** (10 tests):
+- ✅ Result structure validation
+- ✅ Score bounds (0-1)
+- ✅ Confidence calculation
+- ✅ Deterministic results (same file = same score)
+- ✅ Model specification
+- ✅ Processing time tracking
+- ✅ Artifact detection for high scores
 
-  await tx.signAndSend(
-    walletAddress,
-    { signer: injector.signer },
-    (status) => {
-      if (status.isFinalized) {
-        console.log('Stake confirmed:', status.txHash);
-      }
-    }
-  );
-};
+**Consensus Service Tests** (13 tests):
+- ✅ Result structure
+- ✅ Agreement rate calculation
+- ✅ Confidence formula (40% stake + 30% reputation + 20% model + 10% count)
+- ✅ Stake weighting (amount × multiplier × sqrt(reputation))
+- ✅ Majority verdict logic
+- ✅ Verification count scaling
+
+### Run Specific Tests
+
+```bash
+# Test DKG integration
+pnpm test dkg.service
+
+# Test consensus algorithm
+pnpm test consensus.service
+
+# Test deepfake analysis
+pnpm test deepfake-analysis.service
+
+# Watch mode
+pnpm test -- --watch
 ```
 
 ---
@@ -553,124 +812,89 @@ const stakeTokens = async (amount) => {
 
 ```
 polk/
-├── frontend/                 # React + Vite frontend
+├── frontend/                   # React + Vite + TailwindCSS
 │   ├── src/
-│   │   ├── components/       # Reusable UI components
-│   │   │   ├── Header.jsx    # Navigation with wallet connect
-│   │   │   ├── Sidebar.jsx   # App navigation
+│   │   ├── components/
+│   │   │   ├── Header.jsx      # Polkadot wallet connection
+│   │   │   ├── Sidebar.jsx     # Navigation
+│   │   │   ├── Layout.jsx      # App shell
 │   │   │   └── ProtectedRoute.jsx  # Wallet-gated routes
 │   │   ├── pages/
-│   │   │   ├── Dashboard.jsx       # Fact-check listings
-│   │   │   ├── Upload.jsx          # Media upload + analysis
-│   │   │   ├── FactCheckDetail.jsx # Full report view
-│   │   │   ├── HighConfidence.jsx  # Premium content (x402)
-│   │   │   └── Staking.jsx         # Guardian staking interface
+│   │   │   ├── LandingStandalone.jsx  # Marketing page
+│   │   │   ├── Dashboard.jsx          # Fact-check listings
+│   │   │   ├── Upload.jsx             # Media upload + analysis
+│   │   │   ├── FactCheckDetail.jsx    # Full report view
+│   │   │   ├── Staking.jsx            # Multi-token staking UI
+│   │   │   └── HighConfidence.jsx     # x402 premium content
 │   │   ├── contexts/
-│   │   │   └── WalletContext.jsx   # Polkadot.js integration
+│   │   │   ├── PolkadotWalletContext.jsx  # Polkadot.js integration
+│   │   │   └── ThemeContext.jsx           # Dark mode
 │   │   └── config/
-│   │       └── network.js          # NeuroWeb testnet config
+│   │       └── api.js          # API_URL configuration
 │   └── package.json
 │
-├── backend/                  # Express + TypeScript backend
+├── backend/                    # Express + TypeScript + Prisma
 │   ├── src/
-│   │   ├── api/              # REST API routes
-│   │   │   ├── factcheck.routes.ts  # Fact-check CRUD
-│   │   │   ├── consensus.routes.ts  # Guardian voting
-│   │   │   ├── staking.routes.ts    # Token staking
-│   │   │   └── x402.routes.ts       # Payment handling
+│   │   ├── api/                # REST API routes
+│   │   │   ├── media.routes.ts       # Media upload
+│   │   │   ├── factcheck.routes.ts   # Fact-check CRUD
+│   │   │   ├── staking.routes.ts     # Multi-token staking
+│   │   │   ├── consensus.routes.ts   # Guardian voting
+│   │   │   ├── x402.routes.ts        # Micropayments
+│   │   │   └── rdf.routes.ts         # RDF export (NEW)
 │   │   ├── services/
-│   │   │   ├── dkg.service.ts       # OriginTrail DKG integration
-│   │   │   ├── deepfake.service.ts  # AI analysis agent
-│   │   │   ├── consensus.service.ts # Consensus algorithm
-│   │   │   └── x402.service.ts      # Payment processing
-│   │   ├── middleware/
-│   │   │   ├── auth.ts              # Wallet signature verification
-│   │   │   └── payment.ts           # x402 payment gating
+│   │   │   ├── dkg.service.ts        # OriginTrail DKG v8.2.0
+│   │   │   ├── deepfake-analysis.service.ts  # AI detection
+│   │   │   ├── consensus.service.ts  # Weighted voting
+│   │   │   ├── x402.service.ts       # Payment processing
+│   │   │   └── rdf.service.ts        # RDF triple generation (NEW)
 │   │   ├── config/
-│   │   │   ├── index.ts             # App configuration
-│   │   │   └── tokens.ts            # Multi-token support
-│   │   └── index.ts
+│   │   │   ├── index.ts              # App config
+│   │   │   └── tokens.ts             # Multi-token support
+│   │   ├── middleware/
+│   │   │   ├── errorHandler.ts       # Global error handling
+│   │   │   └── requestLogger.ts      # Request logging
+│   │   ├── __tests__/          # Jest test suites (30 tests)
+│   │   │   ├── dkg.service.test.ts
+│   │   │   ├── deepfake-analysis.service.test.ts
+│   │   │   └── consensus.service.test.ts
+│   │   ├── scripts/
+│   │   │   └── publish-test-asset.ts  # Test DKG publishing
+│   │   ├── mcp-server.ts       # Model Context Protocol server (NEW)
+│   │   └── index.ts            # Express app
 │   ├── prisma/
-│   │   └── schema.prisma     # Database schema (SQLite)
+│   │   └── schema.prisma       # Database schema (SQLite)
+│   ├── docs/
+│   │   └── SPARQL_QUERIES.md   # 12 SPARQL examples (NEW)
+│   ├── .env.example            # Environment template
+│   ├── claude_desktop_config.json  # MCP configuration
 │   └── package.json
 │
-├── docs/
-│   ├── API.md                # API endpoints documentation
-│   ├── DKG_INTEGRATION.md    # DKG setup guide
-│   └── DKG_SETUP.md          # Detailed DKG instructions
-│
-├── QUICKSTART.md             # 5-minute setup
-├── check-wallet-balance.sh   # Token balance checker
-└── package.json              # Root workspace config
+├── SECURITY.md                 # Security best practices
+├── GET_TESTNET_TOKENS.md      # Token acquisition guide
+└── package.json                # Root workspace
 ```
 
 ---
 
-## 🧪 Testing
+## 🚢 Deployment
 
-### Run All Tests
-
-```bash
-pnpm test
-```
-
-### Backend Unit Tests
-
-```bash
-cd backend
-pnpm test
-
-# Test DKG integration
-pnpm test dkg.service
-
-# Test consensus algorithm
-pnpm test consensus.service
-
-# Test x402 payments
-pnpm test x402.service
-```
-
-### Frontend Component Tests
-
-```bash
-cd frontend
-pnpm test
-
-# Test wallet integration
-pnpm test WalletContext
-
-# Test upload flow
-pnpm test Upload
-```
-
-### Integration Tests
-
-```bash
-# Test full fact-check flow
-pnpm test:e2e
-
-# Test DKG publishing
-pnpm test:dkg
-
-# Test payment flow
-pnpm test:x402
-```
-
----
-
-## 🌐 Deployment
-
-### Frontend (Vercel/Netlify)
+### Frontend (Vercel / Netlify)
 
 ```bash
 cd frontend
 pnpm build
 
 # Output: dist/
-# Deploy dist/ folder
+# Deploy dist/ folder to Vercel/Netlify
 ```
 
-### Backend (Railway/Fly.io)
+**Environment Variables**:
+```bash
+VITE_API_URL=https://api.yourdomain.com
+```
+
+### Backend (Railway / Fly.io / Render)
 
 ```bash
 cd backend
@@ -680,83 +904,181 @@ pnpm build
 # Start: node dist/index.js
 ```
 
-### Environment Variables (Production)
-
+**Environment Variables** (Production):
 ```bash
 # Use NeuroWeb Mainnet
 DKG_BLOCKCHAIN=otp:2043
-DKG_NODE_ENDPOINT=https://your-mainnet-node.origin-trail.network
+DKG_NODE_ENDPOINT=https://v6-neuroweb-node-01.origin-trail.network
+DKG_PRIVATE_KEY=<use secrets manager>
 
-# Use real private keys (DO NOT COMMIT)
-DKG_PRIVATE_KEY=0x...
-X402_WALLET_ADDRESS=0x...
+# Database (PostgreSQL recommended)
+DATABASE_URL=postgresql://user:pass@host:5432/dbname?sslmode=require
+
+# CORS
+FRONTEND_URL=https://yourdomain.com
+```
+
+**⚠️ Security for Production**:
+- Use AWS Secrets Manager or HashiCorp Vault for private keys
+- Enable HTTPS/TLS
+- Configure WAF (Web Application Firewall)
+- Set up monitoring and alerts
+- Use PostgreSQL instead of SQLite
+- Enable rate limiting
+- See `/SECURITY.md` for full checklist
+
+### Railway Deployment
+
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
+
+# Login
+railway login
+
+# Link project
+railway link
+
+# Set environment variables
+railway variables set DKG_PRIVATE_KEY=0x...
+railway variables set DATABASE_URL=postgresql://...
+
+# Deploy
+railway up
 ```
 
 ---
 
-## 📚 Documentation
+## 🔐 Security Considerations
 
-- **[API.md](./docs/API.md)** - Complete API reference
-- **[DKG_INTEGRATION.md](./docs/DKG_INTEGRATION.md)** - DKG setup and troubleshooting
-- **[DKG_SETUP.md](./docs/DKG_SETUP.md)** - Detailed DKG Edge Node guide
-- **[QUICKSTART.md](./QUICKSTART.md)** - 5-minute setup for judges
+### Private Key Management
+
+**⚠️ CRITICAL**: The repository includes a test wallet for demo purposes. This wallet:
+- Contains **testnet tokens only** (no real value)
+- Private key is **publicly visible** in `.env`
+- **NEVER** use this wallet for mainnet
+- **NEVER** send real tokens to this address
+
+**For Production**:
+1. Generate new wallet via Polkadot.js extension
+2. Store private key in secrets manager (AWS Secrets Manager, HashiCorp Vault)
+3. Use environment variables, never commit to git
+4. Enable 2FA on all accounts
+5. Use hardware wallet (Ledger/Trezor) for high-value operations
+6. See `/SECURITY.md` for complete guide
+
+### API Security
+
+**Implemented**:
+- ✅ CORS configuration
+- ✅ Helmet security headers
+- ✅ Rate limiting (15 minutes / 100 requests)
+- ✅ Input validation (Zod schemas)
+- ✅ SQL injection prevention (Prisma ORM)
+- ✅ XSS prevention (React escaping)
+
+**Production Additions**:
+- [ ] API authentication (JWT tokens)
+- [ ] Request signing
+- [ ] DDoS protection
+- [ ] WAF configuration
+- [ ] Audit logging
 
 ---
 
 ## 🏆 Hackathon Compliance
 
-### Required Features ✅
+### DKGcon 2025 Requirements ✅
 
-- ✅ **DKG Edge Node Integration**: dkg.js v8.2.0 SDK with public testnet node
-- ✅ **Knowledge Assets**: Valid JSON-LD Schema.org MediaReview format
-- ✅ **Agent-Knowledge-Trust Layers**: Deepfake analysis → DKG publishing → Token economics
+- ✅ **DKG Edge Node Integration**: dkg.js v8.2.0 SDK, real testnet publishing
+- ✅ **Knowledge Assets**: Valid Schema.org MediaReview JSON-LD format
+- ✅ **Agent-Knowledge-Trust**: Complete 3-layer architecture
 - ✅ **NeuroWeb/Polkadot**: On-chain staking, Polkadot.js wallet integration
 - ✅ **x402 Micropayments**: Payment gating for high-confidence content
-- ✅ **Functional Prototype**: Working upload → analysis → consensus → publishing flow
-- ✅ **Clear Documentation**: README, setup guides, API docs, architecture diagrams
-- ✅ **Structured Examples**: Real UALs with complete JSON-LD schemas
+- ✅ **MCP Server**: 8 tools for AI agent integration
+- ✅ **RDF Export**: Semantic web integration (Turtle, N-Triples, N-Quads)
+- ✅ **SPARQL Queries**: 12 example queries for Knowledge Graph
+- ✅ **Functional Prototype**: Complete upload → analyze → stake → publish flow
+- ✅ **Test Coverage**: 30/30 tests passing
+- ✅ **Documentation**: Comprehensive README, API docs, setup guides
 
 ### Judging Criteria Alignment
 
 **💡 Excellence & Innovation (20%)**
+- First decentralized fact-checking with MCP server for AI agents
 - Multi-chain coordination (NeuroWeb + Base Sepolia)
-- Sybil-resistant consensus with economic incentives
-- Complete provenance tracking for AI model outputs
+- Multi-token staking with Polkadot ecosystem bonuses
+- RDF export for semantic web integration
+- Complete AI provenance tracking
 
 **⚙️ Technical Implementation (40%)**
-- Full stack: React + Express + Prisma + DKG
-- Real DKG integration (not mock)
-- Working x402 payments
-- Polkadot.js wallet integration
+- Full-stack: React + Express + Prisma + DKG
+- Real DKG integration (not mock) with testnet publishing
+- 30/30 automated tests
 - Production-ready code quality
+- Polkadot.js wallet integration
+- Working x402 payments
 
 **💥 Impact & Relevance (20%)**
-- Addresses misinformation crisis
-- Economic sustainability via x402
+- Addresses deepfake/misinformation crisis
+- Economic sustainability via tiered pricing
 - Scalable to millions of fact-checks
 - Composable Knowledge Assets
+- Interoperable with semantic web tools
 
 **⚖️ Ethics & Openness (10%)**
 - Transparent AI provenance
 - Open-source (MIT license)
 - Verifiable on-chain data
-- No centralized control
+- Decentralized governance
+- No vendor lock-in
 
 **🎬 Communication (10%)**
 - Clear architecture diagrams
-- Complete setup instructions
-- Real working examples
-- Video demo (see submission)
+- Comprehensive documentation
+- Step-by-step setup guide
+- Working code examples
+- API reference
+
+---
+
+## 📚 Additional Documentation
+
+- **SPARQL Queries**: `/backend/docs/SPARQL_QUERIES.md` - 12 example queries
+- **Security Guide**: `/SECURITY.md` - Best practices and checklist
+- **Token Guide**: `/GET_TESTNET_TOKENS.md` - How to get testnet tokens
+- **Environment Template**: `/backend/.env.example` - Configuration reference
+- **Integration Status**: `/INTEGRATION_COMPLETE.md` - Full feature list
 
 ---
 
 ## 🔗 Links
 
 - **Repository**: https://github.com/winsznx/polk
-- **Video Demo**: [YouTube Link] _(to be added)_
-- **Live Demo**: [Deployment URL] _(to be added)_
-- **OriginTrail DKG**: https://docs.origintrail.io
+- **Live Demo**: [TBD - Add deployment URL]
+- **Video Demo**: [TBD - Add YouTube link]
+- **DKG Explorer**: https://dkg.origintrail.io
 - **NeuroWeb Explorer**: https://neuroweb-testnet.subscan.io
+- **OriginTrail Docs**: https://docs.origintrail.io
+- **Polkadot.js**: https://polkadot.js.org
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome! Please:
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
+
+**Development Guidelines**:
+- Write tests for new features
+- Follow existing code style
+- Update documentation
+- Ensure all tests pass (`pnpm test`)
 
 ---
 
@@ -770,8 +1092,9 @@ MIT © 2025 winsznx
 
 - **OriginTrail** - DKG protocol and dkg.js SDK
 - **Polkadot** - Blockchain infrastructure and NeuroWeb parachain
-- **Umanitek Guardian** - Social graph dataset
-- **DKGcon 2025** - Hackathon organization
+- **Coinbase** - x402 micropayment protocol
+- **Anthropic** - Model Context Protocol (MCP)
+- **DKGcon 2025** - Hackathon organization and inspiration
 
 ---
 
@@ -780,7 +1103,35 @@ MIT © 2025 winsznx
 - **GitHub**: [@winsznx](https://github.com/winsznx)
 - **Email**: winsznx@gmail.com
 - **Twitter**: [@winsznx](https://twitter.com/winsznx)
+- **Discord**: winsznx#1234
+
+---
+
+## 🎯 Quick Commands Reference
+
+```bash
+# Development
+pnpm install          # Install all dependencies
+pnpm dev             # Start both frontend and backend
+pnpm build           # Build for production
+pnpm test            # Run all tests
+
+# Backend
+cd backend
+pnpm dev             # Start backend only
+pnpm db:push         # Push database schema
+pnpm db:studio       # Open Prisma Studio
+pnpm dkg:publish-test  # Test DKG publishing
+pnpm mcp             # Start MCP server
+
+# Frontend
+cd frontend
+pnpm dev             # Start frontend only
+pnpm build           # Build frontend
+```
 
 ---
 
 **Built for DKGcon 2025 Hackathon** | Scaling Trust in the Age of AI
+
+**Status**: ✅ Production-Ready | 🧪 30/30 Tests Passing | 🔐 Security Documented | 📚 Fully Integrated
