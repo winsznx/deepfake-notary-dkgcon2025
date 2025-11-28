@@ -2,10 +2,9 @@
  * Get Ethereum Address from Private Key
  * Uses ethers.js for proper Keccak-256 hashing
  */
-import { config } from '../config';
 
 async function main() {
-  const privateKey = process.env.DKG_PRIVATE_KEY || config.dkg.privateKey;
+  const privateKey = process.env.DKG_PRIVATE_KEY;
 
   if (!privateKey || privateKey === '0xYOUR_PRIVATE_KEY_HERE_REPLACE_THIS') {
     console.log('❌ No DKG private key configured!');
