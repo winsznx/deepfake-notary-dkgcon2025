@@ -68,6 +68,8 @@ const Upload = () => {
       const factCheckResponse = await axios.post(`${API_URL}/api/factcheck/create`, {
         mediaId: uploadResponse.data.id
         // No guardianIdentifier needed - backend auto-assigns
+      }, {
+        timeout: 60000 // 60 second timeout for ML processing
       });
 
       console.log('✅ Fact-check created:', factCheckResponse.data);

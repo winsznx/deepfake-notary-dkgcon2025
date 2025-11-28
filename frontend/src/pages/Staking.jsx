@@ -52,7 +52,7 @@ const Staking = () => {
   const fetchStakesAndStats = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:3001/api/staking/wallet/${account}`);
+      const response = await axios.get(`${API_URL}/api/staking/wallet/${account}`);
       setStakes(response.data.stakes || []);
       setStats(response.data.stats || stats);
     } catch (error) {

@@ -77,7 +77,7 @@ const HighConfidence = () => {
         // Try to access directly (free tier)
         try {
           const response = await axios.get(
-            `http://localhost:3001/api/x402/high-confidence/${factCheckId}`
+            `${API_URL}/api/x402/high-confidence/${factCheckId}`
           );
 
           if (response.data.success) {
@@ -114,7 +114,7 @@ const HighConfidence = () => {
 
       // Step 2: Pay invoice
       const payResponse = await axios.post(
-        `http://localhost:3001/api/x402/pay/${paymentInfo.invoiceId}`,
+        `${API_URL}/api/x402/pay/${paymentInfo.invoiceId}`,
         {
           payerAddress: account,
           paymentProof: {
@@ -137,7 +137,7 @@ const HighConfidence = () => {
       console.log('🔓 Accessing content with paid invoice...');
 
       const contentResponse = await axios.get(
-        `http://localhost:3001/api/x402/high-confidence/${factCheckId}?invoiceId=${paymentInfo.invoiceId}`
+        `${API_URL}/api/x402/high-confidence/${factCheckId}?invoiceId=${paymentInfo.invoiceId}`
       );
 
       console.log('✅ Content accessed:', contentResponse.data);

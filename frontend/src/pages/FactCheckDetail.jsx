@@ -33,7 +33,7 @@ const FactCheckDetail = () => {
 
   const fetchFactCheck = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/factcheck/${id}`);
+      const response = await axios.get(`${API_URL}/api/factcheck/${id}`);
       setFactCheck(response.data);
       setLoading(false);
     } catch (err) {
