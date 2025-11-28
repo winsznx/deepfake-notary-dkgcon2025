@@ -22,9 +22,11 @@ export const usePolkadotWallet = () => {
 const NETWORKS = {
   neuroweb: {
     name: 'NeuroWeb Testnet',
-    rpc: 'wss://parachain-rpc.origin-trail.network',
+    rpc: 'wss://lofar-testnet.origin-trail.network',
     symbol: 'NEURO',
     decimals: 12,
+    explorer: 'https://neuroweb-testnet.subscan.io',
+    chainId: 20430,
   },
   polkadot: {
     name: 'Polkadot',
