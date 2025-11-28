@@ -74,6 +74,7 @@ model Stake {
   guardianId      String
   amount          Float
   tokenType       String      @default("TRAC")  // TRAC, NEURO, DOT
+  prediction      String?     // "deepfake" or "real" - guardian's vote
   effectiveWeight Float?      // amount * token multiplier
   locked          Boolean     @default(true)
   rewarded        Boolean     @default(false)
