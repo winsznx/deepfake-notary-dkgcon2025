@@ -10,7 +10,7 @@ NPM_CONFIG_AUDIT = 'false'
 cmds = [
   'rm -rf node_modules package-lock.json',
   'npm cache clean --force',
-  'rm -rf /root/.npm',
+  'rm -rf /root/.npm/_npx/* || true',
   'npm install --legacy-peer-deps --no-save --prefer-offline=false --ignore-scripts',
   'npm rebuild'
 ]
