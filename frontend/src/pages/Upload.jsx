@@ -69,7 +69,7 @@ const Upload = () => {
         mediaId: uploadResponse.data.id
         // No guardianIdentifier needed - backend auto-assigns
       }, {
-        timeout: 60000 // 60 second timeout for ML processing
+        timeout: 180000 // 3 minute timeout for ML processing + DKG publishing (can take 1-2 minutes)
       });
 
       console.log('✅ Fact-check created:', factCheckResponse.data);
