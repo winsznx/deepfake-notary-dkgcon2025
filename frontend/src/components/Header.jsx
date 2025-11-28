@@ -3,11 +3,20 @@
  */
 import { Moon, Sun, Wallet, LogOut } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
-import { useWallet } from '../contexts/WalletContext';
+import { usePolkadotWallet } from '../contexts/PolkadotWalletContext';
 
 const Header = () => {
   const { isDark, toggleTheme } = useTheme();
-  const { account, isConnected, isConnecting, connect, disconnect } = useWallet();
+  const {
+    account,
+    accountName,
+    isConnected,
+    isConnecting,
+    connect,
+    disconnect,
+    networkName,
+    error
+  } = usePolkadotWallet();
 
   return (
     <header className="bg-white dark:bg-surface-dark shadow-md sticky top-0 z-50">
@@ -26,12 +35,28 @@ const Header = () => {
           </div>
 
           <div className="flex items-center gap-4">
+            {error && !isConnected && (
+              <div className="text-xs text-red-600 dark:text-red-400 max-w-xs">
+                {error}
+              </div>
+            )}
+
             {isConnected ? (
               <>
-                <div className="flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded-lg">
-                  <Wallet className="w-4 h-4" />
-                  <span className="text-sm font-medium">
-                    {account.slice(0, 6)}...{account.slice(-4)}
+                <div className="flex flex-col items-end">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded-lg">
+                    <Wallet className="w-4 h-4" />
+                    <div className="flex flex-col">
+                      {accountName && (
+                        <span className="text-xs font-medium">{accountName}</span>
+                      )}
+                      <span className="text-xs font-mono">
+                        {account.slice(0, 6)}...{account.slice(-4)}
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {networkName}
                   </span>
                 </div>
                 <button
@@ -51,7 +76,7 @@ const Header = () => {
               >
                 <Wallet className="w-4 h-4" />
                 <span className="text-sm font-medium">
-                  {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+                  {isConnecting ? 'Connecting...' : 'Connect Polkadot Wallet'}
                 </span>
               </button>
             )}

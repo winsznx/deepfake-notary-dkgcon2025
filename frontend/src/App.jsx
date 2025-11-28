@@ -1,12 +1,10 @@
 /**
- * Main App Component with Reown AppKit
+ * Main App Component with Polkadot Wallet Integration
  */
 import { Routes, Route } from 'react-router-dom';
-import { WagmiProvider } from 'wagmi';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { WalletProvider } from './contexts/WalletContext';
-import { wagmiConfig, queryClient } from './config/reown';
+import { PolkadotWalletProvider } from './contexts/PolkadotWalletContext';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import LandingStandalone from './pages/LandingStandalone';
@@ -17,32 +15,41 @@ import Staking from './pages/Staking';
 import HighConfidence from './pages/HighConfidence';
 import Documentation from './pages/Documentation';
 
+// Create QueryClient for async data management
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 5000,
+    },
+  },
+});
+
 const App = () => {
   return (
-    <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <WalletProvider>
-            <Routes>
-              {/* Standalone landing page without layout */}
-              <Route path="/" element={<LandingStandalone />} />
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <PolkadotWalletProvider>
+          <Routes>
+            {/* Standalone landing page without layout */}
+            <Route path="/" element={<LandingStandalone />} />
 
-              {/* Public documentation page */}
-              <Route path="/docs" element={<Documentation />} />
+            {/* Public documentation page */}
+            <Route path="/docs" element={<Documentation />} />
 
-              {/* Protected app routes with layout */}
-              <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="upload" element={<Upload />} />
-                <Route path="factcheck/:id" element={<FactCheckDetail />} />
-                <Route path="staking" element={<Staking />} />
-                <Route path="high-confidence" element={<HighConfidence />} />
-              </Route>
-            </Routes>
-          </WalletProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+            {/* Protected app routes with layout */}
+            <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="upload" element={<Upload />} />
+              <Route path="factcheck/:id" element={<FactCheckDetail />} />
+              <Route path="staking" element={<Staking />} />
+              <Route path="high-confidence" element={<HighConfidence />} />
+            </Route>
+          </Routes>
+        </PolkadotWalletProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 };
 
