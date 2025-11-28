@@ -59,6 +59,14 @@ async function main() {
   console.log('✅ Private key configured');
   console.log('   First 10 characters:', privateKey.substring(0, 10) + '...\n');
 
+  // Try to derive address (approximate)
+  try {
+    const derivedAddress = getAddressFromPrivateKey(privateKey);
+    console.log('📍 Approximate Address:', derivedAddress);
+  } catch (error) {
+    console.log('⚠️  Could not derive address automatically');
+  }
+
   console.log('📋 Network Configuration:');
   console.log('   Blockchain:', config.dkg.blockchain);
   console.log('   DKG Node:', config.dkg.nodeUrl);
