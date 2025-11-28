@@ -7,3 +7,9 @@ uploads
 blazegraph.jnl
 prisma/*.db
 prisma/*.db-journal
+../pnpm-workspace.yaml
+../pnpm-lock.yaml
+../package.json
+../common
+../frontend
+../ot-node
