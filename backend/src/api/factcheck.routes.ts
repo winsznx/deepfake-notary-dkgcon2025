@@ -122,9 +122,14 @@ router.post('/create', async (req, res) => {
       knowledgeAsset,
       dkgAssetId
     });
-  } catch (error) {
-    console.error('Fact-check creation error:', error);
-    return res.status(500).json({ error: 'Failed to create fact-check' });
+  } catch (error: any) {
+    console.error('❌ Fact-check creation error:', error);
+    console.error('📋 Error message:', error.message);
+    console.error('📋 Error stack:', error.stack);
+    return res.status(500).json({
+      error: 'Failed to create fact-check',
+      details: error.message
+    });
   }
 });
 
