@@ -64,9 +64,9 @@ export class DKGService {
 
       // Add RPC and hub contract for each network
       if (blockchain === 'otp:20430') {
-        // NeuroWeb Testnet
-        blockchainConfig.rpc = 'https://lofar-testnet.origin-trail.network';
-        blockchainConfig.hubContract = '0xe233b5b78853a62b1e11ebe88bf083e25b0a57a6';
+        // NeuroWeb Testnet - Using HTTP instead of WSS for reliability
+        blockchainConfig.rpc = 'https://lofar-tm-rpc.origin-trail.network';
+        blockchainConfig.hubContract = '0xBbfF7Ea6b2Addc1f38A0798329e12C08f03750A6';
       } else if (blockchain === 'otp:2043') {
         // NeuroWeb Mainnet
         blockchainConfig.rpc = 'https://astrosat-parachain-rpc.origin-trail.network';

@@ -58,20 +58,43 @@ export const PolkadotWalletProvider = ({ children }) => {
     const initApi = async () => {
       try {
         const network = NETWORKS[currentNetwork];
-        const provider = new WsProvider(network.rpc);
-        const apiInstance = await ApiPromise.create({ provider });
+        const provider = new WsProvider(network.rpc, false); // false = don't auto-connect
 
-        // Set format for balance display
-        formatBalance.setDefaults({
-          decimals: network.decimals,
-          unit: network.symbol,
-        });
+        // Add connection timeout and retry logic
+        let retries = 0;
+        const maxRetries = 3;
 
-        setApi(apiInstance);
-        console.log(`✅ Connected to ${network.name}`);
+        const connect = async () => {
+          try {
+            const apiInstance = await ApiPromise.create({
+              provider,
+              throwOnConnect: false, // Don't throw on connection failure
+            });
+
+            // Set format for balance display
+            formatBalance.setDefaults({
+              decimals: network.decimals,
+              unit: network.symbol,
+            });
+
+            setApi(apiInstance);
+            console.log(`✅ Connected to ${network.name}`);
+          } catch (err) {
+            retries++;
+            if (retries < maxRetries) {
+              console.log(`Retrying connection (${retries}/${maxRetries})...`);
+              setTimeout(connect, 2000);
+            } else {
+              console.error('Failed to connect to network after retries:', err);
+              setError(`Could not connect to ${NETWORKS[currentNetwork].name}. Please check your internet connection.`);
+            }
+          }
+        };
+
+        connect();
       } catch (err) {
-        console.error('Failed to connect to network:', err);
-        setError(`Failed to connect to ${NETWORKS[currentNetwork].name}`);
+        console.error('Failed to initialize network:', err);
+        setError(`Failed to initialize ${NETWORKS[currentNetwork].name}`);
       }
     };
 
