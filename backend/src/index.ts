@@ -15,6 +15,7 @@ import factCheckRoutes from './api/factcheck.routes';
 import stakingRoutes from './api/staking.routes';
 import consensusRoutes from './api/consensus.routes';
 import x402Routes from './api/x402.routes';
+import rdfRoutes from './api/rdf.routes';
 
 dotenv.config();
 
@@ -98,6 +99,7 @@ app.use('/api/factcheck', factCheckRoutes);
 app.use('/api/staking', stakingRoutes);
 app.use('/api/consensus', consensusRoutes);
 app.use('/api/x402', x402Routes);
+app.use('/api/rdf', rdfRoutes);
 
 // Error handling
 app.use(errorHandler);
