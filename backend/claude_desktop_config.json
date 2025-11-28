@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "deepfake-notary": {
+      "command": "pnpm",
+      "args": ["mcp"],
+      "cwd": "/Users/macbook/Documents/polk/backend",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    }
+  }
+}

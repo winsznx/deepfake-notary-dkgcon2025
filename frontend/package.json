@@ -10,6 +10,10 @@
     "lint": "eslint src --ext .js,.jsx"
   },
   "dependencies": {
+    "@polkadot/api": "^16.5.3",
+    "@polkadot/extension-dapp": "^0.62.6",
+    "@polkadot/util": "^13.5.9",
+    "@polkadot/util-crypto": "^13.5.9",
     "@reown/appkit": "^1.8.14",
     "@reown/appkit-adapter-wagmi": "^1.8.14",
     "@tanstack/react-query": "^5.90.10",
