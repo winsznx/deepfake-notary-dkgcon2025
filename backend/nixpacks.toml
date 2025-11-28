@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ['nodejs_18', 'openssl']
+
+[phases.install]
+cmds = [
+  'rm -rf node_modules package-lock.json',
+  'npm install --legacy-peer-deps --no-save'
+]
+
+[phases.build]
+cmds = ['npx prisma generate', 'npm run build']
+
+[start]
+cmd = 'npx prisma db push && npm start'
