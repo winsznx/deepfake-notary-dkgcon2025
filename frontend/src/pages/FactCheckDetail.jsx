@@ -11,12 +11,12 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 import { API_URL } from '../config/api';
-import { useWallet } from '../contexts/WalletContext';
+import { usePolkadotWallet } from '../contexts/PolkadotWalletContext';
 
 const FactCheckDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { account, isConnected } = useWallet();
+  const { account, isConnected } = usePolkadotWallet();
   const [factCheck, setFactCheck] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

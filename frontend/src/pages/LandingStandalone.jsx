@@ -11,12 +11,12 @@ import {
   Moon, Sun, X
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
-import { useWallet } from '../contexts/WalletContext';
+import { usePolkadotWallet } from '../contexts/PolkadotWalletContext';
 import TargetCursor from '../components/TargetCursor';
 
 const LandingStandalone = () => {
   const { theme, toggleTheme } = useTheme();
-  const { isConnected, connect } = useWallet();
+  const { isConnected, connect } = usePolkadotWallet();
   const navigate = useNavigate();
 
   // Auto-navigate to dashboard if wallet is already connected

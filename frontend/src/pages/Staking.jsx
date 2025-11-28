@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { Coins, TrendingUp, AlertCircle, CheckCircle, Target, Wallet as WalletIcon, Sparkles, Award, Circle } from 'lucide-react';
 import axios from 'axios';
 import { API_URL } from '../config/api';
-import { useWallet } from '../contexts/WalletContext';
+import { usePolkadotWallet } from '../contexts/PolkadotWalletContext';
 
 // Token color mapping
 const TOKEN_COLORS = {
@@ -16,7 +16,7 @@ const TOKEN_COLORS = {
 };
 
 const Staking = () => {
-  const { account, isConnected, connect, balance, balanceSymbol } = useWallet();
+  const { account, isConnected, connect, balance, balanceSymbol } = usePolkadotWallet();
   const [activeTab, setActiveTab] = useState('overview');
   const [stakes, setStakes] = useState([]);
   const [stats, setStats] = useState({

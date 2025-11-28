@@ -7,10 +7,10 @@ import { useSearchParams } from 'react-router-dom';
 import { Star, Lock, CreditCard, CheckCircle, AlertCircle, ExternalLink, Wallet } from 'lucide-react';
 import axios from 'axios';
 import { API_URL } from '../config/api';
-import { useWallet } from '../contexts/WalletContext';
+import { usePolkadotWallet } from '../contexts/PolkadotWalletContext';
 
 const HighConfidence = () => {
-  const { account, isConnected, connect } = useWallet();
+  const { account, isConnected, connect } = usePolkadotWallet();
   const [searchParams] = useSearchParams();
   const [factCheckId, setFactCheckId] = useState(searchParams.get('id') || '');
   const [paymentInfo, setPaymentInfo] = useState(null);
