@@ -2,6 +2,8 @@
 # Place this in the repository root to configure the backend service
 
 [build]
+# Skip the default pnpm install by setting it to true (no-op)
+installCommand = "true"
 buildCommand = "cd backend && rm -rf node_modules package-lock.json && npm install --legacy-peer-deps --no-save && npx prisma generate && npm run build"
 
 [deploy]

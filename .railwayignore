@@ -1,0 +1,7 @@
+pnpm-workspace.yaml
+pnpm-lock.yaml
+common/
+frontend/
+ot-node/
+*.log
+.DS_Store
