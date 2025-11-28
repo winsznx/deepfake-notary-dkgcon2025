@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Upload as UploadIcon, FileVideo, Image, AlertCircle, CheckCircle, Loader, Lock, Star } from 'lucide-react';
 import axios from 'axios';
+import { API_URL } from '../config/api';
 
 const Upload = () => {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const Upload = () => {
       const formData = new FormData();
       formData.append('media', file);
 
-      const uploadResponse = await axios.post('http://localhost:3001/api/media/upload', formData, {
+      const uploadResponse = await axios.post(`${API_URL}/api/media/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
@@ -64,7 +65,7 @@ const Upload = () => {
       // Step 2: Create fact-check (runs deepfake analysis)
       // Guardian is auto-assigned by backend
       console.log('🔍 Creating fact-check...');
-      const factCheckResponse = await axios.post('http://localhost:3001/api/factcheck/create', {
+      const factCheckResponse = await axios.post(`${API_URL}/api/factcheck/create`, {
         mediaId: uploadResponse.data.id
         // No guardianIdentifier needed - backend auto-assigns
       });

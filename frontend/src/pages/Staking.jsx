@@ -5,6 +5,7 @@
 import { useState, useEffect } from 'react';
 import { Coins, TrendingUp, AlertCircle, CheckCircle, Target, Wallet as WalletIcon, Sparkles, Award, Circle } from 'lucide-react';
 import axios from 'axios';
+import { API_URL } from '../config/api';
 import { useWallet } from '../contexts/WalletContext';
 
 // Token color mapping
@@ -63,7 +64,7 @@ const Staking = () => {
 
   const fetchConsensusResults = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/consensus/recent/all');
+      const response = await axios.get(`${API_URL}/api/consensus/recent/all');
       setConsensusResults(response.data || []);
     } catch (error) {
       console.error('Failed to fetch consensus results:', error);
@@ -72,7 +73,7 @@ const Staking = () => {
 
   const fetchSupportedTokens = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/staking/tokens');
+      const response = await axios.get(`${API_URL}/api/staking/tokens');
       setSupportedTokens(response.data.tokens || []);
     } catch (error) {
       console.error('Failed to fetch supported tokens:', error);

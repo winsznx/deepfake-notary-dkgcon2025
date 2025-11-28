@@ -10,6 +10,7 @@ import {
   CheckCircle, ExternalLink, Coins, TrendingUp, Lock, Star
 } from 'lucide-react';
 import axios from 'axios';
+import { API_URL } from '../config/api';
 import { useWallet } from '../contexts/WalletContext';
 
 const FactCheckDetail = () => {
@@ -43,7 +44,7 @@ const FactCheckDetail = () => {
 
   const fetchSupportedTokens = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/staking/tokens');
+      const response = await axios.get(`${API_URL}/api/staking/tokens');
       setSupportedTokens(response.data.tokens || []);
     } catch (err) {
       console.error('Failed to fetch supported tokens:', err);
@@ -61,7 +62,7 @@ const FactCheckDetail = () => {
 
     setStaking(true);
     try {
-      await axios.post('http://localhost:3001/api/staking/stake', {
+      await axios.post(`${API_URL}/api/staking/stake', {
         factCheckId: id,
         guardianIdentifier: identifier,
         amount: parseFloat(stakeAmount),

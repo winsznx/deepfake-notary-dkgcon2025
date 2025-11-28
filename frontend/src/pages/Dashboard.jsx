@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { FileCheck, AlertTriangle, CheckCircle, Clock, TrendingUp, Lock, Star } from 'lucide-react';
 import axios from 'axios';
 import { LineChart, BarChart, DonutChart } from '../components/Charts';
+import { API_URL } from '../config/api';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -25,7 +26,7 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       // Fetch all fact-checks
-      const response = await axios.get('http://localhost:3001/api/factcheck/all');
+      const response = await axios.get(`${API_URL}/api/factcheck/all`);
       const factChecks = response.data;
 
       // Calculate stats from real data
