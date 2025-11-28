@@ -4,11 +4,11 @@
  */
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWallet } from '../contexts/WalletContext';
+import { usePolkadotWallet } from '../contexts/PolkadotWalletContext';
 import { Wallet, Shield } from 'lucide-react';
 
 const ProtectedRoute = ({ children }) => {
-  const { isConnected, isConnecting, connect } = useWallet();
+  const { isConnected, isConnecting, connect } = usePolkadotWallet();
   const navigate = useNavigate();
 
   useEffect(() => {
